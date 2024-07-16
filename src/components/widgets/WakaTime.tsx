@@ -1,5 +1,5 @@
-import {createSignal, onMount} from "solid-js";
-import {A} from "@common/base";
+import { createSignal, onMount } from "solid-js";
+import { A } from "@common/base";
 
 const WakaTime = () => {
   const [count, setCount] = createSignal("loading...");
@@ -14,9 +14,13 @@ const WakaTime = () => {
   });
 
   return (
-    <A href="https://wakatime.com/@JasonLovesDoggo">
-      Tracked time coding: <b>{count()}</b>
-    </A>
+    <div>
+      <A href="https://wakatime.com/@JasonLovesDoggo">
+        <p>
+          Tracked time coding: <b>{count()}</b>
+        </p>
+      </A>
+    </div>
   );
 };
 export default WakaTime;

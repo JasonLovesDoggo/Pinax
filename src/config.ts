@@ -63,7 +63,7 @@ export const hotkeys = [
     mdIcon: "desktop_windows",
     children: [
       {
-        id: "Light Theme",
+        id: "Reset to Default",
         title: "Change theme to Light",
         mdIcon: "light_mode",
       },
