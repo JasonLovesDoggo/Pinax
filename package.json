@@ -13,6 +13,7 @@
     "@suid/icons-material": "^0.7.0",
     "@suid/material": "^0.16.0",
     "@suid/vite-plugin": "^0.2.0",
+    "chroma-js": "^2.4.2",
     "perfectly-scrollable": "^1.1.0",
     "solid-js": "^1.8.17",
     "vite-tsconfig-paths": "^4.3.2"
@@ -21,6 +22,8 @@
     "prettier": "^3.3.3",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
+    "vite-bundle-analyzer": "^0.10.3",
+    "vite-plugin-compression2": "^1.1.2",
     "vite-plugin-solid": "^2.10.2"
   }
 }
