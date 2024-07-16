@@ -15,6 +15,7 @@
     "@suid/vite-plugin": "^0.2.0",
     "chroma-js": "^2.4.2",
     "perfectly-scrollable": "^1.1.0",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.8.17",
     "solid-ninja-keys": "^0.3.0",
     "vite-tsconfig-paths": "^4.3.2"

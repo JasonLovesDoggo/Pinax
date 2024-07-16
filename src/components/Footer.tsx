@@ -1,4 +1,6 @@
-import {Toolbar} from "@suid/material";
+import { IconButton, Link, Stack, Toolbar } from "@suid/material";
+import { FooterItem, footerItems } from "../config";
+import { For } from "solid-js";
 
 const Footer = () => {
   return (
@@ -11,7 +13,16 @@ const Footer = () => {
           color: "white",
         }}
       >
-        <h3>Footer</h3>
+        <Stack direction="row" spacing={1}>
+          <For each={footerItems}>
+            {(item: FooterItem) => (
+              // @ts-ignore
+              <IconButton aria-label={item.label} as={Link} href={item.href}>
+                {<item.icon />}
+              </IconButton>
+            )}
+          </For>
+        </Stack>
       </Toolbar>
     </footer>
   );

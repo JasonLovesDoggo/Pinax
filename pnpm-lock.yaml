@@ -26,6 +26,9 @@ importers:
       perfectly-scrollable:
         specifier: ^1.1.0
         version: 1.1.0
+      solid-icons:
+        specifier: ^1.1.0
+        version: 1.1.0(solid-js@1.8.18)
       solid-js:
         specifier: ^1.8.17
         version: 1.8.18
@@ -672,6 +675,11 @@ packages:
   seroval@1.1.0:
     resolution: {integrity: sha512-74Wpe+hhPx4V8NFe00I2Fu9gTJopKoH5vE7nCqFzVgKOXV8AnN23T58K79QLYQotzGpH93UZ+UN2Y11j9huZJg==}
     engines: {node: '>=10'}
+
+  solid-icons@1.1.0:
+    resolution: {integrity: sha512-IesTfr/F1ElVwH2E1110s2RPXH4pujKfSs+koT8rwuTAdleO5s26lNSpqJV7D1+QHooJj18mcOiz2PIKs0ic+A==}
+    peerDependencies:
+      solid-js: '*'
 
   solid-js@1.8.18:
     resolution: {integrity: sha512-cpkxDPvO/AuKBugVv6xKFd1C9VC0XZMu4VtF56IlHoux8HgyW44uqNSWbozMnVcpIzHIhS3vVXPAVZYM26jpWw==}
@@ -1379,6 +1387,10 @@ snapshots:
       seroval: 1.1.0
 
   seroval@1.1.0: {}
+
+  solid-icons@1.1.0(solid-js@1.8.18):
+    dependencies:
+      solid-js: 1.8.18
 
   solid-js@1.8.18:
     dependencies:
