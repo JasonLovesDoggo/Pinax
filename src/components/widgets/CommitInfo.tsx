@@ -1,5 +1,5 @@
 import {createSignal, For, onMount, Suspense} from "solid-js";
-import {TimeSince} from "../utils/time";
+import {TimeSince} from "../../utils/time";
 
 interface MostRecentCommit {
   repo: string;

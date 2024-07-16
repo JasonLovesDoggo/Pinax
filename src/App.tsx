@@ -1,30 +1,41 @@
 import "./App.css";
-import ViewCount from "@components/ViewCount";
-import CommitInfo from "@components/CommitInfo";
-import WakaTime from "@components/WakaTime";
+import ViewCount from "@components/widgets/ViewCount";
+// import CommitInfo from "@components/widgets/CommitInfo";
+import WakaTime from "@components/widgets/WakaTime";
 // import {ThemeProvider} from "@suid/material";
-import {createContext} from "solid-js";
+import {createContext, JSX} from "solid-js";
+import {Container, CssBaseline} from "@suid/material";
+import NavBar from "@components/NavBar";
+import Footer from "@components/Footer";
 
 createContext()
 
-// export const [theme, setTheme] = createSignal(BaseTheme);
+// export const [theme, setTheme] = createSignal({});
 
 
-function App() {
-
-
+const Layout = (props: {
+    children: JSX.Element;
+}) => {
     return (
         <>
-            {/*<ThemeProvider theme={theme()}>*/}
+            <CssBaseline/>
+            <NavBar/>
+            <Container sx={{height: "100vh", width: "100vw"}} as={"main"} disableGutters  maxWidth={false}>
+                    {props.children}
+            </Container>
+            <Footer/>
+        </>
+    )
+}
 
-                <div>
-                    <h1>Portfolio</h1>
-                    <p>My personal portfolio website</p>
-                    <WakaTime/>
-                    <ViewCount duration={1.1}/>
-                    <CommitInfo/>
-                </div>
-            {/*</ThemeProvider>*/}
+function App() {
+    return (
+        <>
+            <Layout>
+                <WakaTime/>
+                <ViewCount duration={1.1}/>
+                {/*<CommitInfo/>*/}
+            </Layout>
         </>
     );
 }

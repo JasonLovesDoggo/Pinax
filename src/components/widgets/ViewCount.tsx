@@ -1,5 +1,5 @@
 import {createSignal, onMount} from "solid-js";
-import CountUp from "@components/CountUp";
+import CountUp from "@components/utils/CountUp";
 import {A} from "@common/base";
 
 type ViewCountProps = {
