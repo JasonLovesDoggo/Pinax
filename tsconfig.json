@@ -1,31 +1,38 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@common/*": ["src/components/common/*"]
-    },
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "types": ["vite/client"],
-    "noEmit": true,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-    /* Bundler mode */
-    "allowImportingTsExtensions": false,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+	"baseUrl": ".",
+	"paths": {
+	  "@components/*": [
+		"src/components/*"
+	  ],
+	  "@common/*": [
+		"src/components/common/*"
+	  ]
+	},
+	"target": "ESNext",
+	"module": "ESNext",
+	"moduleResolution": "Bundler",
+	"allowSyntheticDefaultImports": true,
+	"esModuleInterop": true,
+	"jsx": "preserve",
+	"jsxImportSource": "solid-js",
+	"types": [
+	  "vite/client"
+	],
+	"noEmit": true,
+	"isolatedModules": true,
+	"skipLibCheck": true,
+	/* Bundler mode */
+	"allowImportingTsExtensions": false,
+	"resolveJsonModule": true,
+	"moduleDetection": "force",
+	/* Linting */
+	"strict": true,
+	"noUnusedLocals": true,
+	"noUnusedParameters": true,
+	"noFallthroughCasesInSwitch": true
   }
 }
+
 
 //      dist/assets/index-DNbqLwwJ.js   54.72 kB │ gzip: 20.62 kB
