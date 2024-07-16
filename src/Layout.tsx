@@ -1,4 +1,3 @@
-import "./App.css";
 import {createContext, JSX} from "solid-js";
 import {Container, CssBaseline} from "@suid/material";
 import NavBar from "@components/NavBar";
