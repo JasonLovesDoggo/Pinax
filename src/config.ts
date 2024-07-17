@@ -1,25 +1,17 @@
 import { OcHome2, OcMarkgithub2 } from "solid-icons/oc";
-import { IconTypes } from "solid-icons";
 import { FaBrandsLinkedin } from "solid-icons/fa";
+import { navigateTo } from "./utils/handlers";
+import { Colors, FooterItem, NavItem, Settings } from "./utils/settings.types";
 
-enum Colors {
-  primary = "primary",
-  secondary = "secondary",
-  accent = "accent",
-  default = "default",
-}
-
-export interface NavItem {
-  name: string;
-  href: string;
-  icon: IconTypes;
-  color: Colors;
-}
-export interface FooterItem {
-  label: string;
-  href: string;
-  icon: IconTypes;
-}
+export const settings: Settings = {
+  wakatime: {
+    username: "JasonLovesDoggo",
+    export_id: "f2e375a2-7920-488d-b43b-3f8c7da12ccf",
+  },
+  github: "JasonLovesDoggo",
+  linkedin: "jsoncameron",
+  abacus_path: "jasoncameron/portfolio",
+};
 
 export const nav: NavItem[] = [
   {
@@ -53,9 +45,14 @@ export const hotkeys = [
     title: "Open Home",
     hotkey: "cmd+h",
     mdIcon: "home",
-    handler: () => {
-      console.log("navigation to home");
-    },
+    handler: navigateTo("/"),
+  },
+  {
+    id: "GitHub",
+    title: "Open GitHub",
+    hotkey: "cmd+g",
+    mdIcon: "mark_github",
+    handler: navigateTo("", true),
   },
   {
     id: "Theme",

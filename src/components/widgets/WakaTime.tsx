@@ -1,11 +1,12 @@
 import { createSignal, onMount } from "solid-js";
 import { A } from "@common/base";
+import { settings } from "../../config";
 
 const WakaTime = () => {
   const [count, setCount] = createSignal("loading...");
   onMount(async () => {
     const response = await fetch(
-      "https://wakatime.com/share/@JasonLovesDoggo/f2e375a2-7920-488d-b43b-3f8c7da12ccf.json",
+      `https://wakatime.com/share/@${settings.wakatime.username}/${settings.wakatime.export_id}.json`,
     );
     const data = await response.json();
     setCount(
@@ -15,7 +16,7 @@ const WakaTime = () => {
 
   return (
     <div>
-      <A href="https://wakatime.com/@JasonLovesDoggo">
+      <A href={`https://wakatime.com/@${settings.wakatime.username}`}>
         <p>
           Tracked time coding: <b>{count()}</b>
         </p>

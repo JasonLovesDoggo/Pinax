@@ -1,5 +1,12 @@
-import {createSignal, For, onMount, Suspense} from "solid-js";
-import {TimeSince} from "../../utils/time";
+import { createSignal, For, onMount, Suspense } from "solid-js";
+import { TimeSince } from "../../utils/time";
+
+/*
+  NOTE TO ANY FUTURE REVIEWERS:
+  katib is a personal project of mine that I use to track my commits.
+  If you wish to use it for your own projects, you can find the source code and update the username in it to your own.
+  https://github.com/JasonLovesDoggo/Katib
+* */
 
 interface MostRecentCommit {
   repo: string;

@@ -1,10 +1,11 @@
 import { IconButton, Link, Stack, Toolbar, Typography } from "@suid/material";
-import { FooterItem, footerItems } from "../config";
+import { footerItems } from "../config";
 import { For } from "solid-js";
 import StackProps from "@suid/material/Stack/StackProps";
 import WakaTime from "@components/widgets/WakaTime";
 import ViewCount from "@components/widgets/ViewCount";
 import { SxProps } from "@suid/system";
+import { FooterItem } from "../utils/settings.types";
 
 const FooterElement = (props: StackProps) => {
   return (
