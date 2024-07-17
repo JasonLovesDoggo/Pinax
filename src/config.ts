@@ -52,7 +52,34 @@ export const hotkeys = [
     title: "Open GitHub",
     hotkey: "cmd+g",
     mdIcon: "mark_github",
-    handler: navigateTo("", true),
+    handler: navigateTo("https://github.com/" + settings.github, true),
+  },
+  {
+    id: "LinkedIn",
+    title: "Open LinkedIn",
+    hotkey: "cmd+l",
+    mdIcon: "brand_linkedin",
+    handler: navigateTo(
+      "https://www.linkedin.com/in/" + settings.linkedin,
+      true,
+    ),
+  },
+  {
+    id: "WakaTime",
+    title: "Open WakaTime",
+    mdIcon: "access_time",
+    handler: navigateTo(
+      "https://wakatime.com/@${settings.wakatime.username}",
+      true,
+    ),
+  },
+  {
+    id: "Themer",
+    title: "Open Themer",
+    mdIcon: "palette",
+    handler: () => {
+      console.log("Open Themer");
+    },
   },
   {
     id: "Theme",

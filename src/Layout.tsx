@@ -1,18 +1,25 @@
-import { createContext, JSX } from "solid-js";
+import { createContext, createSignal, JSX } from "solid-js";
 import { Container, CssBaseline } from "@suid/material";
 import NavBar from "@components/NavBar";
 import Footer from "@components/Footer";
 // @ts-ignore
 import { NinjaKeys } from "solid-ninja-keys";
 import { hotkeys } from "./config";
+import ColorSelector from "./ColorSelector/Portal";
 
 createContext();
 
 // export const [theme, setTheme] = createSignal({});
 
 const Layout = (props: { children: JSX.Element[] }) => {
+  const [themerOpen, openThemer] = createSignal(false);
+  const [color, setColor] = createSignal("#000000");
+
+  openThemer(true);
+
   return (
     <>
+      <ColorSelector isOpen={themerOpen} color={color} setColor={setColor} />
       <NinjaKeys hotkeys={hotkeys} placeholder="Search or jump to..." />
       <CssBaseline />
       <NavBar />

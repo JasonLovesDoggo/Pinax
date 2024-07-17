@@ -1,6 +1,6 @@
 /* @refresh reload */
-import {render} from "solid-js/web";
-import {Route, Router} from "@solidjs/router";
+import { render } from "solid-js/web";
+import { Route, Router } from "@solidjs/router";
 import NotFound from "@components/pages/Errors";
 import Home from "@components/pages/Home";
 import Layout from "./Layout";
