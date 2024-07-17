@@ -1,5 +1,5 @@
 import { Portal, Show } from "solid-js/web";
-import { createEffect, createSignal, For } from "solid-js";
+import { createEffect, createSignal, For, onMount } from "solid-js";
 import { Box } from "@suid/material/Box";
 import { hslToHex } from "../utils/colors";
 
@@ -43,6 +43,22 @@ interface SelectorProps {
 const ColorSelector = (props: SelectorProps) => {
   const [Hue, setHue] = createSignal(215);
   const [Lightness, setLightness] = createSignal(0);
+
+  onMount(() => {
+    const ninja = document.querySelector("ninja-keys");
+    console.log(ninja);
+    if (ninja) {
+      ninja.addEventListener("selected", (e: any) => {
+        console.log(e.detail);
+      });
+    }
+  });
+
+  // if (
+  //   document.getElementsByTagName("ninja-keys")[0].classList.contains("visible")
+  // ) {
+  //   document.getElementsByTagName("ninja-keys")[0].classList.remove("visible");
+  // }
 
   createEffect(() => {
     const color = hslToHex(Hue(), 1, Lightness());

@@ -1,4 +1,4 @@
-import { createContext, createSignal, JSX } from "solid-js";
+import { Context, createContext, createSignal, JSX } from "solid-js";
 import { Container, CssBaseline } from "@suid/material";
 import NavBar from "@components/NavBar";
 import Footer from "@components/Footer";
@@ -7,7 +7,10 @@ import { NinjaKeys } from "solid-ninja-keys";
 import { hotkeys } from "./config";
 import ColorSelector from "./ColorSelector/Portal";
 
-createContext();
+export const OpenContext: Context<{
+  themerOpen: () => boolean;
+  openThemer: (open: boolean) => void;
+}> = createContext({});
 
 // export const [theme, setTheme] = createSignal({});
 
@@ -19,19 +22,21 @@ const Layout = (props: { children: JSX.Element[] }) => {
 
   return (
     <>
-      <ColorSelector isOpen={themerOpen} color={color} setColor={setColor} />
-      <NinjaKeys hotkeys={hotkeys} placeholder="Search or jump to..." />
-      <CssBaseline />
-      <NavBar />
-      <Container
-        sx={{ height: "100vh", width: "100vw" }}
-        as={"main"}
-        disableGutters
-        maxWidth={false}
-      >
-        {props.children}
-      </Container>
-      <Footer />
+      <OpenContext.Provider value={{ themerOpen, openThemer }}>
+        <ColorSelector isOpen={themerOpen} color={color} setColor={setColor} />
+        <NinjaKeys hotkeys={hotkeys} placeholder="Search or jump to..." />
+        <CssBaseline />
+        <NavBar />
+        <Container
+          sx={{ height: "100vh", width: "100vw" }}
+          as={"main"}
+          disableGutters
+          maxWidth={false}
+        >
+          {props.children}
+        </Container>
+        <Footer />
+      </OpenContext.Provider>
     </>
   );
 };
