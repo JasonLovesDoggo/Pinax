@@ -1,5 +1,8 @@
 import { navigateTo } from "./utils/handlers";
 import { Colors, FooterItem, NavItem, Settings } from "./utils/settings.types";
+import MdiHome from "~icons/mdi/home";
+import MdiLinkedin from "~icons/mdi/linkedin";
+import MdiGithub from "~icons/mdi/github";
 
 export const settings: Settings = {
   wakatime: {
@@ -16,7 +19,7 @@ export const nav: NavItem[] = [
     name: "Home",
     href: "/",
     color: Colors.primary,
-    icon: OcHome2,
+    icon: MdiHome,
   },
 ];
 
@@ -24,12 +27,12 @@ export const footerItems: FooterItem[] = [
   {
     label: "My GitHub",
     href: "https://github.com/jasonlovesdoggo",
-    icon: OcMarkgithub2,
+    icon: MdiGithub,
   },
   {
     label: "My LinkedIn",
     href: "https://www.linkedin.com/in/jsoncameron/",
-    icon: FaBrandsLinkedin,
+    icon: MdiLinkedin,
   },
 ];
 

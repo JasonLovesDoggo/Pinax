@@ -1,12 +1,12 @@
 import { Box as SBox, Theme, Typography } from "@suid/material";
-import { JSX } from "solid-js";
+import { JSXElement } from "solid-js";
 import { TypographyProps } from "@suid/material/Typography";
 
 export const Typ = (props: TypographyProps) => {
   return <Typography {...props}>{props.children}</Typography>;
 };
 
-export const BBox = (props: { sx: any; children: JSX.Element }) => {
+export const BBox = (props: { sx: any; children: JSXElement }) => {
   return (
     <SBox
       sx={{

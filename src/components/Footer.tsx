@@ -52,7 +52,7 @@ const Footer = () => {
           {(item: FooterItem) => (
             // @ts-ignore
             <IconButton aria-label={item.label} as={Link} href={item.href}>
-              {<item.icon />}
+              {item.icon}
             </IconButton>
           )}
         </For>

@@ -1,9 +1,9 @@
-import { JSX } from "solid-js";
+import { JSXElement } from "solid-js";
 
 export const A = (props: {
   href: string;
   newTab?: boolean;
-  children: JSX.Element;
+  children: JSXElement;
 }) => {
   if (!props.newTab) props.newTab = true;
   return (

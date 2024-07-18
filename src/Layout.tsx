@@ -1,4 +1,4 @@
-import { createContext, createSignal, JSX } from "solid-js";
+import { createContext, createSignal, JSXElement } from "solid-js";
 import { Container, CssBaseline } from "@suid/material";
 import NavBar from "@components/NavBar";
 import Footer from "@components/Footer";
@@ -13,7 +13,7 @@ export const OpenContext = createContext(
 
 // export const [theme, setTheme] = createSignal({});
 
-const Layout = (props: { children: JSX.Element[] }) => {
+const Layout = (props: { children: JSXElement[] }) => {
   const [themerOpen, openThemer] = createSignal(false);
   const [color, setColor] = createSignal("#000000");
 
