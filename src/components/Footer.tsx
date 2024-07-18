@@ -1,4 +1,4 @@
-import { IconButton, Link, Stack, Toolbar, Typography } from "@suid/material";
+import { IconButton, Link, Stack, Toolbar } from "@suid/material";
 import { footerItems } from "../config";
 import { For } from "solid-js";
 import StackProps from "@suid/material/Stack/StackProps";
@@ -6,6 +6,7 @@ import WakaTime from "@components/widgets/WakaTime";
 import ViewCount from "@components/widgets/ViewCount";
 import { SxProps } from "@suid/system";
 import { FooterItem } from "../utils/settings.types";
+import { Typ } from "@common/Mui";
 
 const FooterElement = (props: StackProps) => {
   return (
@@ -57,7 +58,7 @@ const Footer = () => {
         </For>
       </FooterElement>
       <FooterElement sx={styles.middle}>
-        <Typography>Copyright ©️ {year} Jason Cameron</Typography>
+        <Typ>Copyright ©️ {year} Jason Cameron</Typ>
       </FooterElement>
       <FooterElement spacing={2} sx={styles.right}>
         <WakaTime />

@@ -1,5 +1,4 @@
-import {JSX} from "solid-js";
-import {Box as SBox, Theme} from "@suid/material";
+import { JSX } from "solid-js";
 
 export const A = (props: {
   href: string;
@@ -15,18 +14,5 @@ export const A = (props: {
     >
       {props.children}
     </a>
-  );
-};
-
-export const BBox = (props: { sx: any; children: JSX.Element }) => {
-  return (
-    <SBox
-      sx={{
-        borderColor: (theme: Theme) => theme.palette.primary.main,
-        ...props.sx,
-      }}
-    >
-      {props.children}
-    </SBox>
   );
 };
