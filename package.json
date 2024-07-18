@@ -16,17 +16,17 @@
     "@suid/types": "^0.6.0",
     "@suid/vite-plugin": "^0.2.0",
     "perfectly-scrollable": "^1.1.0",
-    "solid-icons": "^1.1.0",
-    "solid-js": "^1.8.17",
+    "solid-js": "^1.8.18",
     "solid-ninja-keys": "^0.3.0",
+    "solid-sonner": "^0.2.8",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "devDependencies": {
+    "@mojojoejo/vite-plugin-purgecss": "^1.1.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4",
     "vite-bundle-analyzer": "^0.10.3",
-    "vite-plugin-compression2": "^1.1.2",
     "vite-plugin-solid": "^2.10.2"
   }
 }

@@ -2,6 +2,16 @@ import { For } from "solid-js";
 import { Grid, Typography } from "@suid/material";
 import { Typ } from "@common/Mui";
 
+// const LanguageToIcon = (name: string) => {
+//   return (
+//     <img
+//       src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/devicon/devicon-original.svg"
+//       alt={name}
+//       aria-label={name}
+//     />
+//   );
+// };
+
 export interface LanguageElementProps {
   name: string;
   color: string;
@@ -12,7 +22,11 @@ const LanguageDescriptor = (props: LanguageElementProps) => {
   return (
     <li style={{ display: "inline" }}>
       <span
-        style={{ display: "inline-flex" }}
+        style={{
+          display: "inline-flex",
+          "align-items": "center",
+          "margin-right": "16px",
+        }}
         class="d-inline-flex flex-items-center flex-nowrap text-small mr-3"
       >
         <svg
@@ -29,9 +43,7 @@ const LanguageDescriptor = (props: LanguageElementProps) => {
         >
           <path d="M8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"></path>
         </svg>
-        <Typ sx={{ "margin-right": "4px", fontWeight: "600" }}>
-          {props.name}
-        </Typ>
+        <Typ sx={{ marginRight: "4px", fontWeight: 600 }}>{props.name}</Typ>
         <Typ>{props.percentage}%</Typ>
       </span>
     </li>

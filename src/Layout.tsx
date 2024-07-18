@@ -1,4 +1,4 @@
-import { Context, createContext, createSignal, JSX } from "solid-js";
+import { createContext, createSignal, JSX } from "solid-js";
 import { Container, CssBaseline } from "@suid/material";
 import NavBar from "@components/NavBar";
 import Footer from "@components/Footer";
@@ -7,10 +7,9 @@ import { NinjaKeys } from "solid-ninja-keys";
 import { hotkeys } from "./config";
 import ColorSelector from "./ColorSelector/Portal";
 
-export const OpenContext: Context<{
-  themerOpen: () => boolean;
-  openThemer: (open: boolean) => void;
-}> = createContext({});
+export const OpenContext = createContext(
+  {} as { themerOpen: () => boolean; openThemer: (arg: boolean) => void },
+);
 
 // export const [theme, setTheme] = createSignal({});
 

@@ -1,5 +1,3 @@
-import { IconTypes } from "solid-icons";
-
 export interface Settings {
   github: string;
   linkedin: string;

@@ -16,7 +16,7 @@ const languages: LanguageElementProps[] = [
   { name: "JavaScript", color: "F1E05A", percentage: 10 },
 ];
 
-const Home = (setOpen, open) => {
+const Home = () => {
   const { themerOpen, openThemer } = useContext(OpenContext);
   return (
     <div>
@@ -25,7 +25,7 @@ const Home = (setOpen, open) => {
       <Button
         variant="contained"
         color="primary"
-        on:click={() => {
+        onClick={() => {
           openThemer(!themerOpen());
         }}
       >
@@ -36,3 +36,21 @@ const Home = (setOpen, open) => {
 };
 
 export default Home;
+
+/*dist/index.html.br                  0.23 kB
+dist/index.html.gz                  0.35 kB
+dist/index.html                     0.54 kB │ gzip:  0.35 kB
+dist/assets/index-BOxNzpca.js.br   54.16 kB
+dist/assets/index-BOxNzpca.js.gz   62.05 kB
+dist/assets/index-BOxNzpca.js     191.45 kB │ gzip: 62.11 kB
+*/
+
+/*
+* dist/index.html.br                  0.23 kB
+dist/index.html.gz                  0.35 kB
+dist/index.html                     0.54 kB │ gzip:  0.35 kB
+dist/assets/index-BOxNzpca.js.br   54.16 kB
+dist/assets/index-BOxNzpca.js.gz   62.05 kB
+dist/assets/index-BOxNzpca.js     191.45 kB │ gzip: 62.11 kB
+✓ built in 1.43s
+*/

@@ -1,5 +1,3 @@
-import { OcHome2, OcMarkgithub2 } from "solid-icons/oc";
-import { FaBrandsLinkedin } from "solid-icons/fa";
 import { navigateTo } from "./utils/handlers";
 import { Colors, FooterItem, NavItem, Settings } from "./utils/settings.types";
 
