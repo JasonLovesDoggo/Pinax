@@ -1,7 +1,6 @@
-import { JSX } from "solid-js";
-import SvgSVGAttributes = JSX.SvgSVGAttributes;
+import type { JSX } from "solid-js";
 
-export type Icon = (props: SvgSVGAttributes<SVGSVGElement>) => Element;
+export type Icon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => Element;
 
 export interface Settings {
   github: string;
