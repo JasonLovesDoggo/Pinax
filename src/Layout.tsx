@@ -2,10 +2,14 @@ import { createContext, createSignal, JSXElement } from "solid-js";
 import { Container, CssBaseline } from "@suid/material";
 import NavBar from "@components/NavBar";
 import Footer from "@components/Footer";
-// @ts-ignore
-import { NinjaKeys } from "solid-ninja-keys";
-import { hotkeys } from "./config";
+import "solid-command-palette/pkg-dist/style.css";
+import { CommandPalette, Root } from "solid-command-palette";
 import ColorSelector from "./ColorSelector/Portal";
+import { actions } from "./config";
+
+export interface ActionsContext {
+  increment: () => void;
+}
 
 export const OpenContext = createContext(
   {} as { themerOpen: () => boolean; openThemer: (arg: boolean) => void },
@@ -18,12 +22,19 @@ const Layout = (props: { children: JSXElement[] }) => {
   const [color, setColor] = createSignal("#000000");
 
   openThemer(true);
+  const actionsContext = {
+    increment() {
+      console.log("increment count state by 1");
+    },
+  };
 
   return (
     <>
       <OpenContext.Provider value={{ themerOpen, openThemer }}>
         <ColorSelector isOpen={themerOpen} color={color} setColor={setColor} />
-        <NinjaKeys hotkeys={hotkeys} placeholder="Search or jump to..." />
+        <Root actions={actions} actionsContext={actionsContext}>
+          <CommandPalette />
+        </Root>
         <CssBaseline />
         <NavBar />
         <Container

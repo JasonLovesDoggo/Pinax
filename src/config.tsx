@@ -2,6 +2,9 @@ import { navigateTo } from "./utils/handlers";
 import { Colors, FooterItem, NavItem, Settings } from "./utils/settings.types";
 import HomeIcon from "@suid/icons-material/Home";
 import { GitHubIcon } from "./assets/icons";
+import { defineAction } from "solid-command-palette";
+import type { ActionsContext } from "./Layout";
+import { ActionContext } from "solid-command-palette/pkg-dist/types/types";
 
 export const settings: Settings = {
   wakatime: {
@@ -100,3 +103,27 @@ export const hotkeys = [
     ],
   },
 ];
+
+const minimalAction = defineAction({
+  id: "minimal",
+  title: "Minimal Action",
+  run: () => {
+    console.log("ran minimal action");
+  },
+});
+
+const incrementCounterAction = defineAction({
+  id: "increment-counter",
+  title: "Increment Counter by 1",
+  subtitle: "Press CMD + E to trigger this.",
+  shortcut: "$mod+e", // $mod = Command on Mac & Control on Windows.
+  run: (context: ActionContext) => {
+    const actionsContext = context.rootContext as unknown as ActionsContext;
+    actionsContext.increment();
+  },
+});
+
+export const actions = {
+  [minimalAction.id]: minimalAction,
+  [incrementCounterAction.id]: incrementCounterAction,
+};
