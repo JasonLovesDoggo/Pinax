@@ -18,11 +18,10 @@
     "perfectly-scrollable": "^1.1.0",
     "solid-js": "^1.8.18",
     "solid-ninja-keys": "^0.3.0",
-    "solid-sonner": "^0.2.8",
-    "vite-tsconfig-paths": "^4.3.2"
+    "solid-sonner": "^0.2.8"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.229",
+    "vite-tsconfig-paths": "^4.3.2",
     "@mojojoejo/vite-plugin-purgecss": "^1.1.0",
     "prettier": "^3.3.3",
     "typescript": "^5.5.3",

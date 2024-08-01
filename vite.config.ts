@@ -5,7 +5,7 @@ import suidPlugin from "@suid/vite-plugin";
 import pluginPurgeCss from "@mojojoejo/vite-plugin-purgecss";
 import Icons from "unplugin-icons/vite";
 
-// import analyzer from "vite-bundle-analyzer";
+import analyzer from "vite-bundle-analyzer";
 
 export default defineConfig({
   plugins: [
@@ -13,7 +13,7 @@ export default defineConfig({
       compiler: "solid",
     }),
     suidPlugin(),
-    // analyzer(),
+    analyzer(),
     pluginPurgeCss({
       variables: true,
     }),
