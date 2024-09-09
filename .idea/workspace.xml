@@ -4,55 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6eeda94-7ae4-48b5-9545-5f13ac86a925" name="Changes" comment="Switch to a different lib. May rewrite from scratch later due to lib's issues but for now it works">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Pinax.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_blame.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/temp.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/temp/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.npmrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eslint.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postcss.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/ui/button/button.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/ui/button/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/ui/collapsible/collapsible-content.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/ui/collapsible/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/images/github.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/images/svelte-logo.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/images/svelte-welcome.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/images/svelte-welcome.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/+layout.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/+page.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/Counter.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/Header.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/about/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/about/+page.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/svelte.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
+    <list default="true" id="f6eeda94-7ae4-48b5-9545-5f13ac86a925" name="Changes" comment="fix imports">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/ui/button/button.svelte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/ui/button/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/Counter.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/Counter.svelte" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +156,7 @@
       <workItem from="1725858033077" duration="950000" />
       <workItem from="1725859033627" duration="613000" />
       <workItem from="1725859992481" duration="314000" />
-      <workItem from="1725860797882" duration="2963000" />
+      <workItem from="1725860797882" duration="3502000" />
     </task>
     <task id="LOCAL-00001" summary="Init commit">
       <option name="closed" value="true" />
@@ -456,7 +414,23 @@
       <option name="project" value="LOCAL" />
       <updated>1722545603358</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="init app. Add basic katib integration">
+      <option name="closed" value="true" />
+      <created>1725863884347</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1725863884347</updated>
+    </task>
+    <task id="LOCAL-00034" summary="fix imports">
+      <option name="closed" value="true" />
+      <created>1725864015238</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1725864015238</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,8 +449,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="Prettier fmt &amp; added wakatiem and fixed commit info" />
-    <MESSAGE value="added Icons + prod build" />
     <MESSAGE value="add SUID (MUI)" />
     <MESSAGE value="added (a disabled ts analyzer)" />
     <MESSAGE value="Proper html tags, better MUI setup (it's going somewhere!!!)" />
@@ -500,7 +472,9 @@
     <MESSAGE value="make the site at least work." />
     <MESSAGE value="got a WORKING version up." />
     <MESSAGE value="Switch to a different lib. May rewrite from scratch later due to lib's issues but for now it works" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switch to a different lib. May rewrite from scratch later due to lib's issues but for now it works" />
+    <MESSAGE value="init app. Add basic katib integration" />
+    <MESSAGE value="fix imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix imports" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

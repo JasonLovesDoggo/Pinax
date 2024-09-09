@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {cn} from '$lib/utils.js';
 	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
+	import {CollapsibleContent, CollapsibleTrigger, Root} from "$lib/components/ui/collapsible";
 	import {onMount} from 'svelte'; // @ts-ignore
 	import {Button} from '$lib/components/ui/button/index.js';
 
@@ -94,8 +95,8 @@
 				</div>
 
 				<div class="mt-4">
-					<Collapsible.Root>
-						<Collapsible.Trigger asChild let:builder>
+					<Root>
+						<CollapsibleTrigger asChild let:builder>
 							<Button
 								builders={[builder]}
 								variant="ghost"
@@ -105,8 +106,8 @@
 								<ChevronsUpDown class="mr-2 h-3 w-3" />
 								View Parent Commits ({commitData.parentCommits.length})
 							</Button>
-						</Collapsible.Trigger>
-						<Collapsible.Content>
+						</CollapsibleTrigger>
+						<CollapsibleContent>
 							<div class="mt-2 space-y-2">
 								{#each commitData.parentCommits as parent}
 									<div class={cn('rounded-md bg-[#0d1117] p-3')}>
@@ -128,8 +129,8 @@
 									</div>
 								{/each}
 							</div>
-						</Collapsible.Content>
-					</Collapsible.Root>
+						</CollapsibleContent>
+					</Root>
 				</div>
 			</div>
 		{:else}
