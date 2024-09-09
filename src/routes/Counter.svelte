@@ -1,7 +1,7 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
 	import {cn} from '$lib/utils.js';
 	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
+	import {onMount} from 'svelte'; // @ts-ignore
 	import {Button} from '$lib/components/ui/button/index.js';
 
 	interface Language {
