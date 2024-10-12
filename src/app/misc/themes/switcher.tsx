@@ -14,7 +14,7 @@ import {
 import { DefaultTheme, themes, Themes } from "~/app/misc/themes/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Card, CardContent } from "~/components/ui/card";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 export default function ThemeCarousel() {
   const [api, setApi] = useState<CarouselApi>();
@@ -27,6 +27,7 @@ export default function ThemeCarousel() {
     const autoplay = api.plugins().autoplay;
     const isPlaying = autoplay.isPlaying();
     if (!isPlaying && autoplayToast === undefined) {
+      autoplay.play();
       setAutoplayToast(
         toast("Scrolling through themes...", {
           action: {
@@ -38,10 +39,10 @@ export default function ThemeCarousel() {
       );
     }
     if (autoplayToast !== undefined) {
+      autoplay.stop();
       toast.dismiss(autoplayToast);
       setAutoplayToast(undefined);
     }
-    isPlaying ? autoplay.stop() : autoplay.play();
   };
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export default function ThemeCarousel() {
       }}
       plugins={[
         Autoplay({
-          delay: 3000,
+          delay: 1500,
           stopOnInteraction: true,
           stopOnMouseEnter: true,
           playOnInit: false,
@@ -77,7 +78,7 @@ export default function ThemeCarousel() {
     >
       <CarouselContent className="-ml-1 max-w-fit">
         {themes.map((t) => (
-          <CarouselItem key={t} className="flex justify-center">
+          <CarouselItem key={t} className="flex justify-center cursor-pointer">
             <div className="p-1">
               <span onClick={toggleAutoplay} className="text-xl font-semibold">{t}</span>
             </div>
@@ -85,8 +86,10 @@ export default function ThemeCarousel() {
         ))}
       </CarouselContent>
      <div className="flex justify-center">
-       <CarouselNext />
-       <CarouselPrevious />
+       <CarouselNext>
+         <IconChevronRight />
+       </CarouselNext>
+       <CarouselPrevious><IconChevronLeft /></CarouselPrevious>
        </div>
     </Carousel>
   );
