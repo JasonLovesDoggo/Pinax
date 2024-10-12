@@ -6,6 +6,7 @@ export default {
   content: ["./src/**/*.tsx"],
   safelist: ["latte", "frappe", "macchiato", "mocha"],
   theme: {
+    colors: {},
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
