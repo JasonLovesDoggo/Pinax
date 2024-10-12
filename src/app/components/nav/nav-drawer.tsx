@@ -104,7 +104,7 @@ export const ListItem = React.forwardRef<
         href={props.href!}
         ref={ref}
         className={cn(
-          "block h-12 select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+          "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block h-12 select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
           className,
         )}
         {...props}
@@ -112,7 +112,7 @@ export const ListItem = React.forwardRef<
         <div className="font-medium leading-none">
           {title} <IconArrowUpRight className="inline-flex" size="18" />
         </div>
-        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+        <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
           {children}
         </p>
       </Link>

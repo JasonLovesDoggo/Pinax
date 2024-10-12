@@ -9,7 +9,7 @@ function getLatestCommit() {
   const label = sha ? sha.slice(0, 7) : "";
   return (
     label && (
-      <span className="text-zinc-350 hidden dark:text-[#898992] sm:inline">
+      <span className="hidden text-text sm:inline">
         #{label}
       </span>
     )
@@ -22,13 +22,13 @@ export const Footer = ({ className, ...props }: ComponentProps<"footer">) => {
   return (
     <footer
       className={clsx(
-        "flex flex-col pt-5 font-medium text-zinc-700 dark:text-zinc-100 md:pt-",
+        "md:pt-1 flex flex-col pt-5 font-medium text-zinc-700 dark:text-zinc-100",
         className,
       )}
       {...props}
     >
       <hr className="border-zinc-150 w-full border-t dark:border-zinc-800" />
-      <div className="flex flex-col flex-wrap gap-2 sm:flex-row items-center justify-between pt-2">
+      <div className="flex flex-col flex-wrap items-center justify-between gap-2 pt-2 sm:flex-row">
         <a
           className="link inline-flex items-center gap-1.5"
           href={Site.github}

@@ -11,18 +11,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
-import { DefaultTheme } from "~/app/misc/themes/types";
+import { DefaultTheme, themes, Themes } from "~/app/misc/themes/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Card, CardContent } from "~/components/ui/card";
 
-type Themes = "winter" | "forest";
-
-const themes: Themes[] = ["winter", "forest", "peaches", "wineter", "eaoskd"];
-
 export default function ThemeCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [autoplayToast, setAutoplayToast] = useState<string | number>();
+  const startIndex = themes.indexOf(DefaultTheme);
 
   const toggleAutoplay = (): void => {
     if (!api?.plugins()?.autoplay) return;
@@ -30,13 +27,15 @@ export default function ThemeCarousel() {
     const autoplay = api.plugins().autoplay;
     const isPlaying = autoplay.isPlaying();
     if (!isPlaying && autoplayToast === undefined) {
-      setAutoplayToast(toast("Scrolling through themes...", {
-        action: {
-          label: "Stop",
-          onClick: () => autoplay.stop(),
-        },
-        duration: Infinity,
-      }));
+      setAutoplayToast(
+        toast("Scrolling through themes...", {
+          action: {
+            label: "Stop",
+            onClick: () => autoplay.stop(),
+          },
+          duration: Infinity,
+        }),
+      );
     }
     if (autoplayToast !== undefined) {
       toast.dismiss(autoplayToast);
@@ -44,8 +43,6 @@ export default function ThemeCarousel() {
     }
     isPlaying ? autoplay.stop() : autoplay.play();
   };
-
-
 
   useEffect(() => {
     if (!api) {
@@ -55,7 +52,8 @@ export default function ThemeCarousel() {
     api.on("select", () => {
       // api.selectedScrollSnap() returns the RELATIVE index of the selected item, so the below will never be undefined
       const theme: Themes = themes[api.selectedScrollSnap()]!;
-      document.documentElement.dataset.theme = theme;
+      document.body.classList.remove(...themes);
+      document.body.classList.add(theme);
     });
   }, [api]);
 
@@ -64,6 +62,7 @@ export default function ThemeCarousel() {
       opts={{
         align: "start",
         loop: true,
+        startIndex:startIndex,
       }}
       plugins={[
         Autoplay({

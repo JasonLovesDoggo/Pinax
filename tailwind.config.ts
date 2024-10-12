@@ -1,11 +1,11 @@
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
-import { createThemes } from "tw-colors";
 
 export default {
   darkMode: ["class"],
   content: ["./src/**/*.tsx"],
+  safelist: ["latte", "frappe", "macchiato", "mocha"],
   theme: {
     extend: {
       fontFamily: {
@@ -20,17 +20,9 @@ export default {
   },
   plugins: [
     require("tailwindcss-animate"),
-    createThemes(({ light, dark }) => ({
-      'winter': light({
-        'primary': 'steelblue',
-        'base': 'darkblue',
-        'surface': '#F3F3F3',
-      }),
-      'forest': dark({
-        'primary': 'turquoise',
-        'base': 'tomato',
-        'surface': '#4A4A4A',
-      }),
-    }))
+    require("@catppuccin/tailwindcss")({
+      prefix: false,
+      defaultFlavour: "latte",
+    }),
   ],
 } satisfies Config;
