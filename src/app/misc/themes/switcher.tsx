@@ -1,8 +1,6 @@
 "use client";
 
 import Autoplay from "embla-carousel-autoplay";
-
-import { Button } from "~/components/ui/button";
 import {
   Carousel,
   CarouselApi,
@@ -78,19 +76,23 @@ export default function ThemeCarousel() {
     >
       <CarouselContent className="-ml-1 max-w-fit">
         {themes.map((t) => (
-          <CarouselItem key={t} className="flex justify-center cursor-pointer">
+          <CarouselItem key={t} className="flex cursor-pointer justify-center">
             <div className="p-1">
-              <span onClick={toggleAutoplay} className="text-xl font-semibold">{t}</span>
+              <span onClick={toggleAutoplay} className="text-xl font-semibold">
+                {t}
+              </span>
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-     <div className="flex justify-center">
-       <CarouselNext>
-         <IconChevronRight />
-       </CarouselNext>
-       <CarouselPrevious><IconChevronLeft /></CarouselPrevious>
-       </div>
+      <div className="flex justify-center">
+        <CarouselNext>
+          <IconChevronRight />
+        </CarouselNext>
+        <CarouselPrevious>
+          <IconChevronLeft />
+        </CarouselPrevious>
+      </div>
     </Carousel>
   );
 }

@@ -13,7 +13,7 @@ export const ServerStatus = () => {
         aria-label="Server Monitoring Website"
       >
         <motion.div
-          className="mr-1 h-3 w-3 rounded-full bg-green-500"
+          className="bg-green-500 mr-1 h-3 w-3 rounded-full"
           animate={{ scale: [1, 1.2, 1] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         />

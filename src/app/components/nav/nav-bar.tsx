@@ -3,7 +3,6 @@ import { usePathname } from "next/navigation";
 import { navItems } from "~/config/layout";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { NavMenu } from "~/app/components/nav/nav-menu";
 import { cn } from "~/lib/utils";
 
 const NavBar = () => {
@@ -17,16 +16,16 @@ const NavBar = () => {
             <Link
               className={cn(
                 "relative transform-gpu rounded-full px-3 py-2 transition-all",
-                path == href ? "" : "hover:opacity-50",
+                path == href ? "text-mantle" : "hover:opacity-50",
               )}
               href={href}
             >
               {path == href && (
                 <motion.div
                   layoutId="active"
-                  className="bg-primary absolute inset-0 backdrop-blur-sm"
+                  className="absolute inset-0 bg-text backdrop-blur-sm"
                   style={{
-                    borderRadius: 9999,
+                    borderRadius: 99,
                   }}
                   transition={{ type: "spring", duration: "0.6" }}
                 />
@@ -35,7 +34,6 @@ const NavBar = () => {
             </Link>
           </div>
         ))}
-        <NavMenu />
       </nav>
     </div>
   );
