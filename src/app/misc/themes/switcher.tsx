@@ -73,23 +73,21 @@ export default function ThemeCarousel() {
         }),
       ]}
       setApi={setApi}
-      className="w-full max-w-xs"
+      className="w-32 max-w-xs" /*Dirty fix for the carousel*/
     >
       <CarouselContent className="-ml-1 max-w-fit">
         {themes.map((t) => (
-          <CarouselItem key={t} className="">
+          <CarouselItem key={t} className="flex justify-center">
             <div className="p-1">
-              <Card>
-                <CardContent className="h-30 flex aspect-square items-center justify-center">
-                  <span className="text-xl font-semibold">{t}</span>
-                </CardContent>
-              </Card>
+              <span onClick={toggleAutoplay} className="text-xl font-semibold">{t}</span>
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselNext />
-      <CarouselPrevious />
+     <div className="flex justify-center">
+       <CarouselNext />
+       <CarouselPrevious />
+       </div>
     </Carousel>
   );
 }
