@@ -1,4 +1,4 @@
-import noise from "~/public/noise.png";
+import noise from "@/public/noise.png";
 
 const BackgroundNoise = () => {
   return (

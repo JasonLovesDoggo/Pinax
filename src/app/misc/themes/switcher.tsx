@@ -8,8 +8,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "~/components/ui/carousel";
-import { DefaultTheme, themes, Themes } from "~/app/misc/themes/types";
+} from "@/components/ui/carousel";
+import { DefaultTheme, themes, Themes } from "@/app/misc/themes/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";

@@ -1,5 +1,5 @@
-import Navbar from "~/app/components/nav/nav-bar";
-import ThemeSwitch from "~/app/misc/themes/switcher";
+import Navbar from "@/app/components/nav/nav-bar";
+import ThemeSwitch from "@/app/misc/themes/switcher";
 
 const Header = () => {
   return (

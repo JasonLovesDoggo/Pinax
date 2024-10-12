@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Site } from "~/config/site";
+import { Site } from "@/config/site";
 
 export const ServerStatus = () => {
   // A pulsing green circle that indicates all systems are running normally.

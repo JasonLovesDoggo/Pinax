@@ -1,9 +1,9 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { navItems } from "~/config/layout";
+import { navItems } from "@/config/layout";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { cn } from "~/lib/utils";
+import { cn } from "@/lib/utils";
 
 const NavBar = () => {
   const path = usePathname();

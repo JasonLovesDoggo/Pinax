@@ -1,13 +1,13 @@
-import "~/styles/globals.css";
+import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
-import { TRPCReactProvider } from "~/trpc/react";
-import Header from "~/app/layouts/header";
-import { Footer } from "~/app/layouts/footer";
-import { Toaster } from "~/components/ui/sonner";
-import BackgroundNoise from "~/app/misc/themes/Noise";
+import { TRPCReactProvider } from "@/trpc/react";
+import Header from "@/app/layouts/header";
+import { Footer } from "@/app/layouts/footer";
+import { Toaster } from "@/components/ui/sonner";
+import BackgroundNoise from "@/app/misc/themes/Noise";
 
 export const metadata: Metadata = {
   title: "Create T3 App",

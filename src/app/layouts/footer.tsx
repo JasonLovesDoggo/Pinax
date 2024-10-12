@@ -1,8 +1,8 @@
 import { clsx } from "clsx";
 import type { ComponentProps } from "react";
-import { Site } from "~/config/site";
+import { Site } from "@/config/site";
 import { IconBrandGithub } from "@tabler/icons-react";
-import { ServerStatus } from "~/app/misc/widgets/server-status";
+import { ServerStatus } from "@/app/misc/widgets/server-status";
 
 function getLatestCommit() {
   const sha = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
