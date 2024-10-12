@@ -6,8 +6,8 @@ import { type Metadata } from "next";
 import { TRPCReactProvider } from "~/trpc/react";
 import Header from "~/app/layouts/header";
 import { Footer } from "~/app/layouts/footer";
-import { Toaster } from "sonner";
-import { ThemeProvider } from "~/app/misc/themes/theme-provider";
+import { Toaster } from "~/components/ui/sonner"
+import BackgroundNoise from "~/app/misc/themes/Noise";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -22,26 +22,21 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${GeistSans.variable}`}
+      className={`${GeistSans.variable} dark`}
     >
-      <body
-      className="absolute inset-0 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] font-10"
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="container mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-5">
-            <div className="flex-1">
-              <Header />
-              <TRPCReactProvider>{children}</TRPCReactProvider>
-            </div>
-            <Footer />
+      <body >
+      <BackgroundNoise />
+      <div className="container mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-5">
+          <div className="flex-1">
+            <Header />
+            <main>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+            </main>
           </div>
-          <Toaster richColors />
-        </ThemeProvider>
+          <Footer />
+        </div>
+        <Toaster richColors />
+
       </body>
     </html>
   );

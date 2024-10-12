@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+    <defs>
+        <filter id="a" width="140%" height="140%" x="-20%" y="-20%" color-interpolation-filters="linearRGB"
+                filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse">
+            <feTurbulence width="100%" height="100%" x="0%" y="0%" baseFrequency=".2" numOctaves="4" result="turbulence"
+                          seed="15" stitchTiles="stitch"/>
+            <feSpecularLighting width="100%" height="100%" x="0%" y="0%" in="turbulence"
+                                lighting-color="hsl(var(--twc-surface))" result="specularLighting" specularConstant=".6"
+                                specularExponent="20" surfaceScale="4">
+                <feDistantLight azimuth="3" elevation="10"/>
+            </feSpecularLighting>
+        </filter>
+    </defs>
+    <path fill="hsl(var(--twc-base) / 0.5)" d="M0 0h700v700H0z"/>
+    <path fill="hsl(var(--twc-surface))" d="M0 0h700v700H0z" filter="url(#a)"/>
+</svg>
