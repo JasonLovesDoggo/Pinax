@@ -7,13 +7,7 @@ import { ServerStatus } from "~/app/misc/widgets/server-status";
 function getLatestCommit() {
   const sha = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
   const label = sha ? sha.slice(0, 7) : "";
-  return (
-    label && (
-      <span className="hidden text-text sm:inline">
-        #{label}
-      </span>
-    )
-  );
+  return label && <span className="hidden text-text sm:inline">#{label}</span>;
 }
 
 export const Footer = ({ className, ...props }: ComponentProps<"footer">) => {
@@ -22,7 +16,7 @@ export const Footer = ({ className, ...props }: ComponentProps<"footer">) => {
   return (
     <footer
       className={clsx(
-        "md:pt-1 flex flex-col pt-5 font-medium text-zinc-700 dark:text-zinc-100",
+        "flex flex-col pt-5 font-medium text-zinc-700 dark:text-zinc-100 md:pt-1",
         className,
       )}
       {...props}

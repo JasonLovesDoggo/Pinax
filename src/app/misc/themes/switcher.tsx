@@ -62,7 +62,7 @@ export default function ThemeCarousel() {
       opts={{
         align: "start",
         loop: true,
-        startIndex:startIndex,
+        startIndex: startIndex,
       }}
       plugins={[
         Autoplay({
