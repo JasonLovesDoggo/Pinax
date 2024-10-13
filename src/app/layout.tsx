@@ -4,10 +4,11 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
-import Header from "@/app/layouts/header";
-import { Footer } from "@/app/layouts/footer";
+import Header from "@/layouts/header";
+import { Footer } from "@/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
-import BackgroundNoise from "@/app/misc/themes/Noise";
+import BackgroundNoise from "@/components/themes/Noise";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{ children: ReactNode }>) {
   return (
     <html
       lang="en"

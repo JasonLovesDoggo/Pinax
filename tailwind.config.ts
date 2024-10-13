@@ -22,7 +22,7 @@ export default {
     require("tailwindcss-animate"),
     require("@catppuccin/tailwindcss")({
       prefix: false,
-      defaultFlavour: "latte",
+      defaultFlavour: "mocha",
     }),
   ],
 } satisfies Config;

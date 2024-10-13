@@ -11,3 +11,15 @@
     @apply h-full bg-base text-text;
   }
 }
+
+.hover-underline-animation {
+  @apply relative inline-block;
+}
+
+.hover-underline-animation::after {
+  @apply absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 transition-all ease-in-out content-[''];
+}
+
+.hover-underline-animation:hover::after {
+  @apply scale-x-100;
+}

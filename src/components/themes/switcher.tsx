@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { DefaultTheme, themes, Themes } from "@/app/misc/themes/types";
+import { DefaultTheme, themes, Themes } from "@/components/themes/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";

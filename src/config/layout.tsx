@@ -1,14 +1,22 @@
 import { ReactNode } from "react";
 
-interface NavItem {
+interface NavItemWithHref {
   title: string;
   href: string;
   icon?: ReactNode;
-  children?: NavItem[];
+  children?: never;
   className?: string;
 }
 
-export const navItems: NavItem[] = [
+interface NavItemWithChildren {
+  title: string;
+  icon?: ReactNode;
+  children: NavItemWithHref[];
+  className?: string;
+  href?: never;
+}
+
+export const navItems: NavItemWithChildren[] | NavItemWithHref[] = [
   {
     title: "Home",
     href: "/",
@@ -22,5 +30,20 @@ export const navItems: NavItem[] = [
   {
     title: "Photos",
     href: "/photos",
+  },
+  {
+    title: "Extras",
+    children: [
+      {
+        title: "Foodle",
+        href: "jasoncameron.dev/foodle",
+        className: "pr-10",
+      },
+      {
+        title: "Music",
+        href: "/music",
+        className: "pr-10",
+      },
+    ],
   },
 ];
