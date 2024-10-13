@@ -25,9 +25,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${GeistSans.variable}`}
     >
-      <body className="bg-base transition-colors duration-700">
+      <body className="bg-base transition-colors duration-1000">
         <BackgroundNoise />
-        <div className="container mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-5">
+        <div className="container mx-auto flex min-h-screen max-w-full flex-col px-4 py-5 sm:max-w-3xl md:max-w-5xl lg:max-w-7xl">
           <div className="flex-1">
             <Header />
             <main>
