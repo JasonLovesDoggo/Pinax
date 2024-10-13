@@ -16,7 +16,7 @@ interface NavItemWithChildren {
   href?: never;
 }
 
-export const navItems: NavItemWithChildren[] | NavItemWithHref[] = [
+export const navItems: (NavItemWithChildren | NavItemWithHref)[] = [
   {
     title: "Home",
     href: "/",
