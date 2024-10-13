@@ -36,7 +36,7 @@ export const navItems: (NavItemWithChildren | NavItemWithHref)[] = [
     children: [
       {
         title: "Foodle",
-        href: "jasoncameron.dev/foodle",
+        href: "https://jasoncameron.dev/foodle",
         className: "pr-10",
       },
       {
