@@ -65,7 +65,7 @@ const BentoContainer = () => {
     const leaves = getLeaves(state.currentNode);
 
     setState({
-      currentNode: createBalancedTreeFromLeaves(leave),
+      currentNode: createBalancedTreeFromLeaves(leaves),
     });
   };
 
