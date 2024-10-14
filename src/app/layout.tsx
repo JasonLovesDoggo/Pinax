@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
+import { type Metadata, Viewport } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import Header from "@/layouts/header";
@@ -10,10 +10,14 @@ import { Toaster } from "@/components/ui/sonner";
 import BackgroundNoise from "@/components/themes/Noise";
 import { ReactNode } from "react";
 
+export const viewport: Viewport = {
+  themeColor: "#b4befe", // https://catppuccin.com/palette#:~:text=199deg%2C%2076%25%2C%2069%25)-,Blue,-%2389b4fa
+  colorScheme: "dark",
+};
+
 export const metadata: Metadata = {
   title: "Jason Cameron | %s",
   description: "Todo",
-  themeColor: "#74c7ec",
   robots: "follow, index",
   authors: [{ name: "Jason Cameron", url: "https://jasoncameron.dev" }],
   keywords: [
