@@ -13,25 +13,9 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { ReactNode, useEffect, useState } from "react";
-import { flavors } from "@catppuccin/palette";
+import { generateRandomColorName } from "@/lib/themes";
 
 const MotionLink = motion.create(Link);
-
-let cachedColorNames: string[] | null = null;
-
-const getColorNamesWithAccents = (): string[] => {
-  if (!cachedColorNames) {
-    cachedColorNames = flavors["mocha"].colorEntries
-      .filter(([_, { accent }]) => accent)
-      .map(([colorName]) => colorName);
-  }
-  return cachedColorNames;
-};
-
-const generateRandomColorName = (): string => {
-  const colorNames = getColorNamesWithAccents();
-  return colorNames[Math.floor(Math.random() * colorNames.length)] ?? "slate";
-};
 
 interface AnimatedLinkProps {
   href?: string;

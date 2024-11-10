@@ -9,6 +9,7 @@ import { Footer } from "@/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
 import BackgroundNoise from "@/components/themes/Noise";
 import { ReactNode } from "react";
+import { getRandomAccentHex } from "@/lib/themes";
 
 export const viewport: Viewport = {
   themeColor: "#b4befe", // https://catppuccin.com/palette#:~:text=199deg%2C%2076%25%2C%2069%25)-,Blue,-%2389b4fa
@@ -54,12 +55,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${GeistSans.variable}`}
-    >
-      <body className="bg-base transition-colors duration-1000">
+    <html lang="en" className={`${GeistSans.variable}`}>
+      <body
+        className={`[scrollbar-color: ${getRandomAccentHex()}] overflow-x-hidden bg-base transition-colors duration-1000 [scrollbar-width:thin]`}
+      >
         <BackgroundNoise />
         <div className="container mx-auto flex min-h-screen max-w-full flex-col px-4 py-5 sm:max-w-3xl md:max-w-5xl lg:max-w-7xl">
           <div className="flex-1">
