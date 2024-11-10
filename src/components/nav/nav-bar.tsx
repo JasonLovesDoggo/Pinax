@@ -12,7 +12,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { flavors } from "@catppuccin/palette";
 
 const MotionLink = motion.create(Link);
@@ -46,13 +46,16 @@ const AnimatedLink = ({
   className,
   onClick,
 }: AnimatedLinkProps) => {
-  const randomColor = generateRandomColorName();
+  const [color, setColor] = useState<string>("slate");
+  useEffect(() => {
+    setColor(generateRandomColorName());
+  }, []);
   const baseClasses =
     "relative text-text hover:text-lavender cursor-pointer transition-all duration-300 ease-in-out";
-  const hoverClasses = `hover:scale-105 bg-${randomColor} hover-underline-animation`;
+  const hoverClasses = `hover:scale-105 bg-${color} hover-underline-animation`;
 
   const content = (
-    <span className={cn(baseClasses, hoverClasses, className)}>{children}</span>
+    <span className={cn(hoverClasses, baseClasses, className)}>{children}</span>
   );
 
   if (href) {
