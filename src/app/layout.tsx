@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata, Viewport } from "next";
 
-import { TRPCReactProvider } from "@/trpc/react";
 import Header from "@/layouts/header";
 import { Footer } from "@/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -63,9 +62,7 @@ export default function RootLayout({
         <div className="container mx-auto flex min-h-screen max-w-full flex-col px-4 py-5 sm:max-w-3xl md:max-w-5xl lg:max-w-7xl">
           <div className="flex-1">
             <Header />
-            <main>
-              <TRPCReactProvider>{children}</TRPCReactProvider>
-            </main>
+            {children}
           </div>
           <Footer />
         </div>
