@@ -23,3 +23,15 @@
 .hover-underline-animation:hover::after {
   @apply scale-x-100;
 }
+
+.mosaic-blueprint-theme {
+  background: transparent !important;
+}
+
+.mosaic-blueprint-theme .mosaic-window .mosaic-window-toolbar {
+  background: hsl(210 4% 11%) !important;
+}
+
+.mosaic-blueprint-theme .mosaic-window .mosaic-window-body {
+  background: hsl(210 5% 9%) !important;
+}
