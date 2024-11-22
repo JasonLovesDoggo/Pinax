@@ -6,7 +6,14 @@ const GridCard = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <Card ref={ref} className={cn("bg-surface0", className)} {...props} />
+  <Card
+    ref={ref}
+    className={cn(
+      "flex h-full flex-col justify-between gap-3 bg-surface0 p-8",
+      className,
+    )}
+    {...props}
+  />
 ));
 GridCard.displayName = "Card";
 
