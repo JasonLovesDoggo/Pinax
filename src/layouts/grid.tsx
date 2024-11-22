@@ -28,11 +28,6 @@ export default function GridLayout({
   const { breakpoint, setBreakpoint } = useBreakpoint();
   const isMounted = useMounted();
 
-  const onBreakpointChange = (newBreakpoint: string, newCols: number) => {
-    console.log("breakpoint changed", newBreakpoint, newCols);
-    setBreakpoint(newBreakpoint);
-  };
-
   const responsiveProps = {
     layouts: { lg: lgLayout, md: mdLayout, sm: smLayout },
     breakpoints,
