@@ -7,7 +7,7 @@ export const ServerStatus = () => {
   return (
     <div>
       <a
-        href={Site.StatusSite}
+        href={Site.statusSite}
         target="_blank"
         className="flex items-center"
         aria-label="Server Monitoring Website"
