@@ -133,7 +133,7 @@ export const LinkPreview = ({
               >
                 <Link
                   href={url}
-                  className="bg-white border-transparent hover:border-neutral-200 dark:hover:border-neutral-800 block rounded-xl border-2 p-1 shadow"
+                  className="border-transparent bg-white hover:border-neutral-200 dark:hover:border-neutral-800 block rounded-xl border-2 p-1 shadow"
                   style={{ fontSize: 0 }}
                 >
                   <Image

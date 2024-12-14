@@ -9,7 +9,7 @@ const GridCard = React.forwardRef<
   <Card
     ref={ref}
     className={cn(
-      "flex h-full flex-col justify-between gap-3 bg-surface0 p-8",
+      "relative flex h-full flex-col items-center justify-center",
       className,
     )}
     {...props}
