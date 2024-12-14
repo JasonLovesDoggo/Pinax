@@ -1,25 +1,35 @@
-# Create T3 App
+# Pinax
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Pinax is a personal website built with Next.js and Tailwind CSS. It features a responsive grid layout, a dark mode,
+and a custom theme system. The website is hosted on Vercel and uses the Vercel Git Integration to automatically
+deploy new commits to the website.
 
-## What's next? How do I make an app with this?
+It's a work in progress, so expect some rough edges and bugs. If you find any, please feel free to open an issue or
+submit a pull request.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Setup
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+1. Clone the repository and install the dependencies:
 
-- [Next.js](https://nextjs.org)
-- [Tailwind CSS](https://tailwindcss.com)
+```bash
+git clone https://github.com/JasonLovesDoggo/Pinax.git
+cd Pinax
+bun install
+```
 
-## Learn More
+2. Create a new file called `.env` in the root directory and add the following variables:
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+```bash
+SPOTIFY_CLIENT_ID=your_spotify_client_id
+SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+```
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+You can get these values from the [spotify developer dashboard](https://developer.spotify.com/dashboard/).
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+3. Run the development server:
 
-## How do I deploy this?
+```bash
+bun dev
+```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
