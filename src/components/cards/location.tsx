@@ -1,17 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Ref, useCallback, useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
 import { CardContent } from "@/components/ui/card";
 import { GlobeInstance } from "globe.gl";
 import { useMeasure } from "react-use";
 import GridCard from "@/components/cards/default";
 
+const torontoCoordinates = { lat: 43.6532, lng: -79.3832 };
+
 export default function Location() {
-  const globeEL = useRef<GlobeInstance>();
+  const globeEL = useRef<GlobeInstance>(undefined);
   const [expanded, setExpanded] = useState(false);
   const [globeReady, setGlobeReady] = useState(false);
-  const torontoCoordinates = { lat: 43.6532, lng: -79.3832 };
 
   const [ref, { width, height }] = useMeasure();
 
@@ -33,9 +34,11 @@ export default function Location() {
   return (
     <GridCard
       className={`cursor-pointer overflow-hidden transition-all duration-500 ease-in-out ${
-        expanded ? "z-590 fixed inset-0 rounded-none" : "aspect-square w-full"
+        expanded
+          ? "z-590 h-100vh fixed inset-0 w-screen rounded-none"
+          : "aspect-square w-full"
       }`}
-      ref={ref}
+      ref={ref as Ref<HTMLDivElement>}
       // onClick={toggleExpanded}
     >
       <CardContent className="h-full p-0">
