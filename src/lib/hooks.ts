@@ -30,7 +30,7 @@ function useMounted(delay: number = 0) {
     setTimeout(() => {
       setIsMounted(true);
     }, delay);
-  }, []);
+  }, [delay]);
 
   return isMounted;
 }

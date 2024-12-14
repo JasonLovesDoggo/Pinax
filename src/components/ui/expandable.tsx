@@ -2,6 +2,7 @@
 
 import React, {
   createContext,
+  LegacyRef,
   ReactNode,
   useContext,
   useEffect,
@@ -14,7 +15,7 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import useMeasure from "react-use"; // react-use-message
+import { useMeasure } from "react-use"; // react-use-message
 import { cn } from "@/lib/utils";
 
 const springConfig = { stiffness: 200, damping: 20, bounce: 0.2 };
@@ -135,6 +136,7 @@ const Expandable = React.forwardRef<HTMLDivElement, ExpandableProps>(
     );
   },
 );
+Expandable.displayName = "Expandable";
 
 // Predefined animation presets
 const ANIMATION_PRESETS = {
@@ -273,10 +275,10 @@ const ExpandableContent = React.forwardRef<
           {(isExpanded || keepMounted) && (
             // This motion.div handles the animation of the content itself
             <motion.div
-              ref={measureRef}
-              initial={combinedAnimateIn.initial}
-              animate={combinedAnimateIn.animate}
-              exit={combinedAnimateOut.exit}
+              ref={measureRef as LegacyRef<HTMLDivElement>}
+              initial={combinedAnimateIn.initial as any}
+              animate={combinedAnimateIn.animate as any}
+              exit={combinedAnimateOut.exit as any}
               transition={{ duration: transitionDuration, ease: easeType }}
             >
               {stagger ? (
@@ -318,6 +320,7 @@ const ExpandableContent = React.forwardRef<
     );
   },
 );
+ExpandableContent.displayName = "ExpandableContent";
 
 interface ExpandableCardProps {
   children: ReactNode;
@@ -423,7 +426,10 @@ const ExpandableCard = React.forwardRef<HTMLDivElement, ExpandableCardProps>(
             <div className="bg-white ring-black/5 rounded-md p-2 shadow-xl ring-1 sm:rounded-lg sm:p-3 md:rounded-3xl md:p-4">
               <div className="h-full w-full overflow-hidden">
                 {/* Ref for measuring content dimensions (so we can let framer know to animate into the dimensions) */}
-                <div ref={measureRef} className="flex h-full flex-col">
+                <div
+                  ref={measureRef as LegacyRef<HTMLDivElement>}
+                  className="flex h-full flex-col"
+                >
                   {children}
                 </div>
               </div>
