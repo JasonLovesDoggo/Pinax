@@ -3,16 +3,20 @@ import type { ComponentProps } from "react";
 import { Site } from "@/config/site";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { ServerStatus } from "@/components/widgets/server-status";
+import { env } from "@/env";
 
 function getLatestCommit() {
-  const sha = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
+  const sha = env.VERCEL_GIT_COMMIT_SHA;
   const label = sha ? sha.slice(0, 7) : "";
   return (
     label && <span className="hidden text-overlay1 sm:inline">#{label}</span>
   );
 }
 
-export const Footer = ({ className, ...props }: ComponentProps<"footer">) => {
+export const Footer = async ({
+  className,
+  ...props
+}: ComponentProps<"footer">) => {
   const year = String(new Date().getFullYear());
 
   return (
