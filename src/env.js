@@ -10,7 +10,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     SPOTIFY_CLIENT_ID: z.string(),
     SPOTIFY_CLIENT_SECRET: z.string(),
-    SPOTIFY_REFRESH_TOKEN: z.string().optional(),
+    SPOTIFY_REFRESH_TOKEN: z.string(),
     VERCEL_GIT_COMMIT_SHA: z.string().optional(),
   },
 
