@@ -1,0 +1,22 @@
+---
+title: Abacus
+description: 🧮 A highly-scaleable and stateless counting API
+links:
+  [
+    { "name": "Demo", "url": "https://abacus.jasoncameron.dev" },
+    { "name": "GitHub", "url": "https://github.com/JasonLovesDoggo/abacus" },
+  ]
+---
+
+On the predecessor to this site, I had built a view counting widget in the footer. It was a stupid simple bit of code
+that just queried [CountAPI](https://countapi.xyz/) to increment a counter. I didn't want to use a database as the
+Site was a simple static react app on github pages.
+
+Unfortunately, out of the blue, CountAPI got bought out by APILayer and the service was shut down. I wasn't able to
+find a replacement service, so I decided to build my own.
+
+I took this as an opportunity to learn golang and to try and build a truly scalable and robust API. I also wanted to
+learn how to use the [Gin](https://github.com/gin-gonic/gin) web framework.
+
+The project is hosted on [GitHub](https://github.com/JasonLovesDoggo/abacus) and the demo is available at
+[https://abacus.jasoncameron.dev](https://abacus.jasoncameron.dev).

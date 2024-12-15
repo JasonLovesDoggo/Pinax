@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import type { ComponentProps } from "react";
-import { Site } from "@/config/site";
+import Site from "@/config/site";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { ServerStatus } from "@/components/widgets/server-status";
 import { env } from "@/env";
