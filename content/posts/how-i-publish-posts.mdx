@@ -1,0 +1,51 @@
+---
+title: How I Publish Posts
+description: A Little history on me and my publishing process
+---
+
+I've always liked the idea of writing blog posts. It's never been something that I truely wanted to do, but I've
+always had a desire to write about things that interest me.
+
+I typically use [Obsidian](https://obsidian.md/) which is powered by [Markdown](https://en.wikipedia.
+org/wiki/Markdown). All of my notes are published using [Quartz](https://github.com/jackyzha0/quartz) and are located at [here](https://notes.jasoncameron.
+dev).
+
+## How I Publish Posts
+
+The process of publishing a post is pretty simple. I'll start by creating a new file in the `content/posts` directory.
+
+```bash
+hx ./content/posts/my-new-post.mdx
+```
+
+Then i'll add a frontmatter block to the top of the file. The frontmatter block is a block of YAML code that contains
+all of the metadata for the post. The frontmatter block is required for all posts.
+
+Typically I'll add just the title and description to the frontmatter block but the following is an example of a full frontmatter block.
+
+```yaml
+---
+title: My New Post
+description: A short description of my new post
+published: false
+date: "2024-12-16T01:52:21.756Z"
+updatedOn: "2024-12-16T01:52:21.756Z"
+---
+```
+
+you'll notice that I have two key pieces of metadata: `date` and `updatedOn`. These fields are particularly important for my workflow as they help me track when the post was created and when it was last updated. However, I ran into a small issue when I started automating the post-publishing process: the `updatedOn` timestamp wasn't updating when I made changes to the file after the initial creation.
+
+Initially, my process for setting the `updatedOn` timestamp was manual. Every time I updated the post, I had to
+remember to update this field in the frontmatter. But since I'm often forgetful, this was a problem.
+
+### Automating the `updatedOn` Timestamp
+
+To solve this problem, I decided to automate the process of updating the `updatedOn` timestamp using a script. My goal was to ensure that every time I made changes to a post and staged the file for commit, the `updatedOn` field would automatically update to the current time. This would save me from manually modifying the timestamp every time I edited a post, and it would ensure that the metadata stayed accurate and up-to-date.
+
+#### Setting Up `lint-staged`
+
+The first step was to integrate the automation into my workflow using `lint-staged`. `Lint-staged` allows me to run specific tasks on files that are staged for a Git commit. I set it up so that every time I staged a `.mdx` or `.md` file, it would automatically trigger a script to update the `updatedOn` field in the frontmatter.
+
+I wrote a TypeScript script that used the `gray-matter` library to parse the frontmatter, check the `updatedOn` field, and update it with the current timestamp. This script would run every time I staged a file, making sure that the `updatedOn` field was always fresh and accurate without any manual intervention.
+
+<script src="https://gist.github.com/JasonLovesDoggo/ac81713f459b41dc4a74d9dfd4699cef.js"></script>
