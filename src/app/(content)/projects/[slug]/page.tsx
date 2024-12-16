@@ -63,6 +63,8 @@ const ProjectPage = async ({ params }: { params: Params }) => {
     ],
   };
 
+  console.log(project.metadata.links);
+
   return (
     <>
       <Script

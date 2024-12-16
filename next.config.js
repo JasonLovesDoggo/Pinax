@@ -7,8 +7,12 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: [
-      "api.microlink.io", // Microlink Image Preview
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: "api.microlink.io", // Microlink Image Preview
+        pathname: '**',
+      },
     ],
   },
   redirects: async () => {
