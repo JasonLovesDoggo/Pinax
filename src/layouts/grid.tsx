@@ -1,6 +1,5 @@
 "use client";
 
-import { breakpoints, cols, rowHeights } from "@/lib/constants";
 import { useBreakpoint, useMounted } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 import {
@@ -9,6 +8,7 @@ import {
   Responsive,
   WidthProvider,
 } from "react-grid-layout";
+import { breakpoints, cols, rowHeights } from "@/lib/constants";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -18,7 +18,7 @@ interface GridLayoutProps extends ReactGridLayoutProps {
   smLayout: Layout[];
 }
 
-export default function GridLayout({
+export default function Grid({
   lgLayout,
   mdLayout,
   smLayout,
@@ -40,6 +40,8 @@ export default function GridLayout({
     draggableCancel: ".cancel-drag",
     onBreakpointChange: setBreakpoint,
     isDraggable: ["lg", "md"].includes(breakpoint),
+    margin: [16, 16] as [number, number],
+    children,
   };
 
   return (
@@ -51,9 +53,7 @@ export default function GridLayout({
         className,
       )}
     >
-      <ResponsiveGridLayout margin={[16, 16]} {...responsiveProps}>
-        {children}
-      </ResponsiveGridLayout>
+      <ResponsiveGridLayout {...responsiveProps} />
     </section>
   );
 }
