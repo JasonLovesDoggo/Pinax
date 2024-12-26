@@ -8,4 +8,3 @@ export type ImageEnhanced = {
   blurDataUrl: string;
   slug: string;
 };
-

@@ -1,5 +1,14 @@
 import { NextResponse } from "next/server";
-import { env } from "@/env";
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
+import { createS3Client } from "@/lib/photos/getImages";
+
+const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
+
+const s3Client = createS3Client();
 
 export async function DELETE(
   request: Request,
@@ -10,21 +19,12 @@ export async function DELETE(
   }
 
   try {
-    const response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/images/v1/${params.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${env.CF_API_TOKEN}`,
-        },
-      },
-    );
+    const command = new DeleteObjectCommand({
+      Bucket: R2_BUCKET_NAME,
+      Key: params.id,
+    });
 
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error("Failed to delete image from Cloudflare");
-    }
+    await s3Client.send(command);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -47,27 +47,32 @@ export async function PATCH(
   try {
     const { tags } = await request.json();
 
-    const response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/images/v1/${params.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${env.CF_API_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          metadata: {
-            tags: tags,
-          },
-        }),
-      },
-    );
+    // Get the existing object
+    const getCommand = new GetObjectCommand({
+      Bucket: R2_BUCKET_NAME,
+      Key: params.id,
+    });
+    const existingObject = await s3Client.send(getCommand);
 
-    const data = await response.json();
+    // Create a new key with updated tags
+    const [uuid, _, extension] = params.id.split("_");
+    const newKey = `${uuid}_${tags.join(",")}.${extension}`;
 
-    if (!data.success) {
-      throw new Error("Failed to update image metadata");
-    }
+    // Copy the object with the new key
+    const putCommand = new PutObjectCommand({
+      Bucket: R2_BUCKET_NAME,
+      Key: newKey,
+      Body: existingObject.Body,
+      ContentType: existingObject.ContentType,
+    });
+    await s3Client.send(putCommand);
+
+    // Delete the old object
+    const deleteCommand = new DeleteObjectCommand({
+      Bucket: R2_BUCKET_NAME,
+      Key: params.id,
+    });
+    await s3Client.send(deleteCommand);
 
     return NextResponse.json({ success: true });
   } catch (error) {

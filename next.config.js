@@ -7,19 +7,17 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    loader: 'custom',
-    loaderFile: './src/lib/photos/cloudflareLoader.ts',
     domains: [process.env.R2_DOMAIN],
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: process.env.R2_DOMAIN,
-        pathname: '/**',
+        pathname: "/**",
       },
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: "api.microlink.io", // Microlink Image Preview
-        pathname: '**',
+        pathname: "**",
       },
     ],
   },

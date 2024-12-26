@@ -15,7 +15,11 @@ import { Badge } from "@/components/ui/badge";
 import DragDropZone from "./DragDropZone";
 
 interface PhotoUploaderProps {
-  onUpload: (files: File[], tags: string[]) => Promise<void>;
+  onUpload: (
+    files: File[],
+    tags: string[],
+    onUploadProgress: (progress: number) => void,
+  ) => Promise<void>;
 }
 
 const PRESET_TAGS = [
@@ -57,14 +61,16 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
     setUploadStatus("idle");
 
     try {
-      // Simulate upload progress
-      const totalSteps = files.length * 10;
-      for (let i = 0; i <= totalSteps; i++) {
-        setUploadProgress(Math.floor((i / totalSteps) * 100));
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
+      const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+      let uploadedSize = 0;
 
-      await onUpload(files, selectedTags);
+      const updateProgress = (chunkSize: number) => {
+        uploadedSize += chunkSize;
+        const progress = Math.round((uploadedSize / totalSize) * 100);
+        setUploadProgress(progress);
+      };
+
+      await onUpload(files, selectedTags, updateProgress);
       setUploadStatus("success");
     } catch (error) {
       console.error("Error uploading photos:", error);

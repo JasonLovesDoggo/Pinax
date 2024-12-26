@@ -13,6 +13,7 @@ export function useAdminPhotos() {
     try {
       const response = await fetch("/api/admin/photos");
       const data = await response.json();
+      console.table(data);
       setPhotos(data);
     } catch (error) {
       console.error("Error fetching photos:", error);
@@ -24,38 +25,28 @@ export function useAdminPhotos() {
   }, [fetchPhotos]);
 
   const uploadPhotos = useCallback(
-    async (files: File[], tags: string[]) => {
+    async (
+      files: File[],
+      tags: string[],
+      onProgress: (progress: number) => void,
+    ) => {
       try {
-        // Get presigned URLs for each file
-        const presignedUrlsResponse = await fetch("/api/admin/presigned-urls", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ count: files.length, tags }),
-        });
-        const { uploadURLs, imageIds } = await presignedUrlsResponse.json();
+        for (const file of files) {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("tags", JSON.stringify(tags));
 
-        // Upload each file to its presigned URL
-        const uploadPromises = files.map(async (file, index) => {
-          const response = await fetch(uploadURLs[index], {
+          const response = await fetch("/api/admin/photos", {
             method: "POST",
-            body: file,
+            body: formData,
           });
-          if (!response.ok)
-            throw new Error(`Failed to upload file ${index + 1}`);
-        });
 
-        await Promise.all(uploadPromises);
+          if (!response.ok) {
+            throw new Error(`Failed to upload file ${file.name}`);
+          }
 
-        // Notify the server that all uploads are complete
-        await fetch("/api/admin/photos", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ imageIds, tags }),
-        });
+          onProgress(100 / files.length);
+        }
 
         await fetchPhotos();
       } catch (error) {

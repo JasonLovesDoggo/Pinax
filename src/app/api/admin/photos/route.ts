@@ -1,35 +1,48 @@
-import { env } from "@/env";
 import { NextResponse } from "next/server";
+import { ListObjectsV2Command, PutObjectCommand } from "@aws-sdk/client-s3";
+import { v4 as uuidv4 } from "uuid";
+import { env } from "@/env";
+import { KeyToTags, R2IdToUrl } from "@/lib/photos/cloudflareLoader";
+import { createS3Client } from "@/lib/photos/getImages";
 
-const CLOUDFLARE_ACCOUNT_ID = env.CF_ACCOUNT_ID;
-const CLOUDFLARE_API_TOKEN = env.CF_API_TOKEN;
+const R2_BUCKET_NAME = env.R2_BUCKET_NAME;
+const s3Client = createS3Client();
 
-export async function GET() {
+export async function GET(request: Request) {
   if (env.NODE_ENV !== "development") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/images/v1`,
-      {
-        headers: {
-          Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
-        },
-      },
+    const command = new ListObjectsV2Command({ Bucket: R2_BUCKET_NAME });
+    const response = await s3Client.send(command);
+
+    const photos = await Promise.all(
+      (response.Contents || []).map(async (object) => {
+        // const getObjectUrl = await getSignedUrl(
+        //   s3Client,
+        //   new PutObjectCommand({
+        //     Bucket: R2_BUCKET_NAME,
+        //     Key: object.Key!,
+        //     // Add custom parameters for image processing
+        //     Metadata: {
+        //       'x-amz-meta-width': '{width}',
+        //       'x-amz-meta-quality': '{quality}'
+        //     }
+        //   }),
+        //   { expiresIn: 3600 }
+        // )
+        if (!object.Key) {
+          console.error("No key found for object", object);
+        }
+
+        return {
+          id: object.Key,
+          url: R2IdToUrl(object.Key as string),
+          tags: KeyToTags(object),
+        };
+      }),
     );
-
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error("Failed to fetch images from Cloudflare");
-    }
-
-    const photos = data.result.images.map((image: any) => ({
-      id: image.id,
-      url: image.variants[0],
-      tags: image.meta?.tags ? JSON.parse(image.meta.tags) : [],
-    }));
 
     return NextResponse.json(photos);
   } catch (error) {
@@ -42,47 +55,32 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (process.env.NODE_ENV !== "development") {
+  if (env.NODE_ENV !== "development") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const { imageIds, tags } = await request.json();
+    const formData = await request.formData();
+    const file = formData.get("file") as File;
+    const tags = JSON.parse(formData.get("tags") as string);
 
-    // The images are already uploaded to Cloudflare at this point
-    // We just need to update their metadata if necessary
+    const fileExtension = file.name.split(".").pop();
+    const fileName = `${uuidv4()}_${tags.join(",")}.${fileExtension}`;
 
-    const updatePromises = imageIds.map(async (id: string) => {
-      const response = await fetch(
-        `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/images/v1/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            metadata: {
-              tags: JSON.stringify(tags),
-            },
-          }),
-        },
-      );
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(`Failed to update metadata for image ${id}`);
-      }
+    const putObjectCommand = new PutObjectCommand({
+      Bucket: R2_BUCKET_NAME,
+      Key: fileName,
+      Body: Buffer.from(await file.arrayBuffer()),
+      ContentType: file.type,
     });
 
-    await Promise.all(updatePromises);
+    await s3Client.send(putObjectCommand);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error processing uploaded photos:", error);
+    console.error("Error uploading photo:", error);
     return NextResponse.json(
-      { error: "Failed to process uploaded photos" },
+      { error: "Failed to upload photo" },
       { status: 500 },
     );
   }

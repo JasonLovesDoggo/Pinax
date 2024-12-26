@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
-import { usePhotos } from "@/hooks/photos";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { cloudflareR2Loader } from "@/lib/photos/cloudflareLoader";
+import { usePhotos } from "@/hooks/photos";
 
 export default function PhotoGrid() {
   const { photos, loadMore } = usePhotos();
@@ -34,6 +35,7 @@ export default function PhotoGrid() {
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="rounded-lg object-cover"
               loading="lazy"
+              loader={cloudflareR2Loader}
             />
           </div>
         ))}
@@ -53,6 +55,7 @@ export default function PhotoGrid() {
                 sizes="100vw"
                 className="object-contain"
                 priority
+                loader={cloudflareR2Loader}
               />
             </div>
           )}

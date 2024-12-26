@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 interface Photo {
   id: string;
   url: string;
+  tags: string[];
 }
 
 const PAGE_SIZE = 20;
@@ -20,6 +21,7 @@ export function usePhotos() {
         `/api/photos?page=${page}&limit=${PAGE_SIZE}`,
       );
       const newPhotos = await response.json();
+      console.table(newPhotos);
       setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
       setPage((prevPage) => prevPage + 1);
     } catch (error) {

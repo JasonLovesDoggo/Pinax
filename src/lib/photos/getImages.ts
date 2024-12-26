@@ -8,14 +8,18 @@ import sharp from "sharp";
 import { ImageEnhanced } from "./types";
 import { env } from "@/env";
 
-const s3Client = new S3Client({
-  region: "auto",
-  endpoint: `https://${env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId: env.CF_ACCESS_KEY_ID!,
-    secretAccessKey: env.CF_SECRET_ACCESS_KEY!,
-  },
-});
+export const createS3Client = () => {
+  return new S3Client({
+    region: "auto",
+    endpoint: `https://${env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+      accessKeyId: env.CF_ACCESS_KEY_ID!,
+      secretAccessKey: env.CF_SECRET_ACCESS_KEY!,
+    },
+  });
+};
+
+const s3Client = createS3Client();
 
 async function processImage(
   key: string,
@@ -52,7 +56,6 @@ export async function getImagesFromR2(): Promise<ImageEnhanced[]> {
   const listCommand = new ListObjectsV2Command({
     Bucket: env.R2_BUCKET_NAME,
   });
-
   const listResponse = await s3Client.send(listCommand);
   const objects = listResponse.Contents || [];
 

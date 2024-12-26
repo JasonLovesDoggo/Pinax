@@ -1,4 +1,3 @@
-"use client";
 import { Suspense } from "react";
 import FullScreenImage from "./FullScreenImage";
 import { getImagesFromR2 } from "@/lib/photos/getImages";
@@ -17,7 +16,7 @@ export default async function FullScreenImagePage({
 }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <FullScreenImage imageKey={image.slug} />
+      <FullScreenImage imageKey={params.slug} />
     </Suspense>
   );
 }
