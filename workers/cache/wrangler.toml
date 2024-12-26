@@ -1,10 +1,13 @@
-name = "render"
+name = "photos"
 main = "src/index.ts"
 compatibility_date = "2022-05-15"
 # Set this to false if you don't want to use the default *.workers.dev route.
 # Note that *.workers.dev routes don't support native worker-level caching: https://developers.cloudflare.com/workers/runtime-apis/cache/
 workers_dev = false
 
+routes = [
+  { pattern = "pic.cdn.jasoncameron.dev", custom_domain = true }
+]
 [vars]
 # The `access-control-allow-origin` header: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
 # Optional, the `access-control-allow-origin` header is omitted if unset, which blocks all cross-origin requests.
@@ -21,7 +24,6 @@ PATH_PREFIX = ""
 # Index file to search for on directory requests, set to "" to disable indexes
 # Relative to the directory of the request.
 #INDEX_FILE = ""
-INDEX_FILE = "index.html"
 
 # File to fall back to when the requested path is not found in the bucket.
 # Incurs an additional read operation for 404 requests.
