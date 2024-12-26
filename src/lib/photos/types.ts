@@ -6,5 +6,6 @@ export type ImageEnhanced = {
   width: number;
   height: number;
   blurDataUrl: string;
+  slug: string;
 };
 

@@ -12,6 +12,13 @@ export const env = createEnv({
     SPOTIFY_CLIENT_SECRET: z.string(),
     SPOTIFY_REFRESH_TOKEN: z.string(),
     VERCEL_GIT_COMMIT_SHA: z.string().optional(),
+
+    CF_API_TOKEN: z.string(),
+    CF_ACCOUNT_ID: z.string(),
+    CF_ACCESS_KEY_ID: z.string(),
+    CF_SECRET_ACCESS_KEY: z.string(),
+    R2_BUCKET_NAME: z.string(),
+    R2_DOMAIN: z.string().optional(),
   },
 
   /**
@@ -29,8 +36,16 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
-    SPOTIFY_REFRESH_TOKEN: process.env.SPOTIFY_REFRESH_TOKEN ?? "",
-    VERCEL_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA ?? "",
+    SPOTIFY_REFRESH_TOKEN: process.env.SPOTIFY_REFRESH_TOKEN,
+    VERCEL_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA,
+
+    // must have "Images" scope
+    CF_API_TOKEN: process.env.CF_API_TOKEN,
+    CF_ACCOUNT_ID: process.env.CF_ACCOUNT_ID,
+    CF_ACCESS_KEY_ID: process.env.CF_ACCESS_KEY_ID,
+    CF_SECRET_ACCESS_KEY: process.env.CF_SECRET_ACCESS_KEY,
+    R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
+    R2_DOMAIN: process.env.R2_DOMAIN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
