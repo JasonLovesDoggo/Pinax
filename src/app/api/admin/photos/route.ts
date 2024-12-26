@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { ListObjectsV2Command, PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 import { env } from "@/env";
-import { KeyToTags, R2IdToUrl } from "@/lib/photos/cloudflareLoader";
+import { R2ObjToPhoto } from "@/lib/photos/cloudflareLoader";
 import { createS3Client } from "@/lib/photos/getImages";
 
 const R2_BUCKET_NAME = env.R2_BUCKET_NAME;
@@ -36,11 +36,7 @@ export async function GET(request: Request) {
           console.error("No key found for object", object);
         }
 
-        return {
-          id: object.Key,
-          url: R2IdToUrl(object.Key as string),
-          tags: KeyToTags(object),
-        };
+        return R2ObjToPhoto(object);
       }),
     );
 

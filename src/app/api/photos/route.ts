@@ -1,31 +1,41 @@
-import { NextResponse } from "next/server";
-import { env } from "@/env";
+import { NextRequest, NextResponse } from "next/server";
+import { ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { createS3Client } from "@/lib/photos/getImages";
+import { R2ObjToPhoto } from "@/lib/photos/cloudflareLoader";
 
-export async function GET(request: Request) {
+const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
+
+const s3Client = createS3Client();
+
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "20");
 
   try {
-    const response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/images/v1?page=${page}&per_page=${limit}`,
-      {
-        headers: {
-          Authorization: `Bearer ${env.CF_API_TOKEN}`,
-        },
-      },
+    const command = new ListObjectsV2Command({
+      Bucket: R2_BUCKET_NAME,
+      MaxKeys: limit,
+      StartAfter: ((page - 1) * limit).toString(),
+    });
+
+    const response = await s3Client.send(command);
+
+    const photos = await Promise.all(
+      (response.Contents || []).map(async (object) => {
+        // const getObjectUrl = await getSignedUrl(
+        //   s3Client,
+        //   new ListObjectsV2Command({
+        //     Bucket: R2_BUCKET_NAME,
+        //     Prefix: object.Key,
+        //     MaxKeys: 1,
+        //   }),
+        //   { expiresIn: 3600 }
+        // )
+
+        return R2ObjToPhoto(object);
+      }),
     );
-
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error("Failed to fetch images from Cloudflare");
-    }
-
-    const photos = data.result.images.map((image: any) => ({
-      id: image.id,
-      url: image.variants[0],
-    }));
 
     return NextResponse.json(photos);
   } catch (error) {

@@ -61,11 +61,20 @@ export const toR2CustomDomain = (url: string) => {
   return env.R2_DOMAIN + url.split("r2.cloudflarestorage.com")[1];
 };
 
-export const R2IdToUrl = (id: string) => {
+const R2IdToUrl = (id: string) => {
   return "https://" + env.R2_DOMAIN + "/" + id;
 };
 
-export const KeyToTags = (r2obj: _Object): string[] => {
+const KeyToTags = (r2obj: _Object): string[] => {
   // @ts-ignore
-  return obj.Key?.split("_")[1].split(".")[0].split(",") || [];
+  return r2obj.Key?.split("_")[1].split(".")[0].split(",") || [];
 };
+
+
+export const R2ObjToPhoto = (r2obj: _Object) => {
+  return {
+    id: r2obj.Key,
+    url: R2IdToUrl(r2obj.Key as string),
+    tags: KeyToTags(r2obj),
+  }
+}
