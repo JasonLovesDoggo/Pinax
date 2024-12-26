@@ -4,39 +4,35 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-
-interface Photo {
-  id: string;
-  url: string;
-  tags: string[];
-}
+import { Photo } from "@/lib/photos/utils";
 
 interface PhotoListProps {
   photos: Photo[];
   onDelete: (id: string) => Promise<void>;
-  onUpdateTags: (id: string, tags: string[]) => Promise<void>;
+  onUpdate: (photo: Photo) => Promise<void>;
 }
 
 export default function PhotoList({
   photos,
   onDelete,
-  onUpdateTags,
+  onUpdate,
 }: PhotoListProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editingTags, setEditingTags] = useState("");
+  const [editingPhoto, setEditingPhoto] = useState<Photo | null>(null);
 
   const handleEdit = (photo: Photo) => {
     setEditingId(photo.id);
-    setEditingTags(photo.tags.join(", "));
+    setEditingPhoto({ ...photo });
   };
 
-  const handleSave = async (id: string) => {
-    await onUpdateTags(
-      id,
-      editingTags.split(",").map((tag) => tag.trim()),
-    );
-    setEditingId(null);
+  const handleSave = async () => {
+    if (editingPhoto) {
+      await onUpdate(editingPhoto);
+      setEditingId(null);
+      setEditingPhoto(null);
+    }
   };
 
   return (
@@ -52,15 +48,40 @@ export default function PhotoList({
               className="rounded-lg object-cover"
             />
           </div>
-          {editingId === photo.id ? (
+          {editingId === photo.id && editingPhoto ? (
             <>
               <Label htmlFor={`tags-${photo.id}`}>Edit Tags</Label>
               <Input
                 id={`tags-${photo.id}`}
-                value={editingTags}
-                onChange={(e) => setEditingTags(e.target.value)}
+                value={editingPhoto.tags.join(", ")}
+                onChange={(e) =>
+                  setEditingPhoto({
+                    ...editingPhoto,
+                    tags: e.target.value.split(",").map((tag) => tag.trim()),
+                  })
+                }
               />
-              <Button onClick={() => handleSave(photo.id)}>Save</Button>
+              <Label htmlFor={`captureDate-${photo.id}`}>Capture Date</Label>
+              <Input
+                type="date"
+                id={`captureDate-${photo.id}`}
+                value={editingPhoto.captureDate.split("T")[0]}
+                onChange={(e) =>
+                  setEditingPhoto({
+                    ...editingPhoto,
+                    captureDate: new Date(e.target.value).toISOString(),
+                  })
+                }
+              />
+              <Label htmlFor={`notes-${photo.id}`}>Notes</Label>
+              <Textarea
+                id={`notes-${photo.id}`}
+                value={editingPhoto.notes || ""}
+                onChange={(e) =>
+                  setEditingPhoto({ ...editingPhoto, notes: e.target.value })
+                }
+              />
+              <Button onClick={handleSave}>Save</Button>
               <Button variant="outline" onClick={() => setEditingId(null)}>
                 Cancel
               </Button>
@@ -68,7 +89,11 @@ export default function PhotoList({
           ) : (
             <>
               <p className="text-sm">Tags: {photo.tags.join(", ")}</p>
-              <Button onClick={() => handleEdit(photo)}>Edit Tags</Button>
+              <p className="text-sm">
+                Capture Date: {new Date(photo.captureDate).toLocaleDateString()}
+              </p>
+              {photo.notes && <p className="text-sm">Notes: {photo.notes}</p>}
+              <Button onClick={() => handleEdit(photo)}>Edit</Button>
             </>
           )}
           <Button variant="destructive" onClick={() => onDelete(photo.id)}>

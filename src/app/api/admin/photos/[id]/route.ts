@@ -4,11 +4,9 @@ import {
   GetObjectCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
-import { createS3Client } from "@/lib/photos/getImages";
+import { createPhotoKey, s3Client } from "@/lib/photos/utils";
 
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
-
-const s3Client = createS3Client();
 
 export async function DELETE(
   request: Request,
@@ -45,7 +43,7 @@ export async function PATCH(
   }
 
   try {
-    const { tags } = await request.json();
+    const updatedPhoto = await request.json();
 
     // Get the existing object
     const getCommand = new GetObjectCommand({
@@ -54,9 +52,8 @@ export async function PATCH(
     });
     const existingObject = await s3Client.send(getCommand);
 
-    // Create a new key with updated tags
-    const [uuid, _, extension] = params.id.split("_");
-    const newKey = `${uuid}_${tags.join(",")}.${extension}`;
+    // Create a new key with updated metadata
+    const newKey = createPhotoKey(updatedPhoto);
 
     // Copy the object with the new key
     const putCommand = new PutObjectCommand({
@@ -76,9 +73,9 @@ export async function PATCH(
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error updating photo tags:", error);
+    console.error("Error updating photo:", error);
     return NextResponse.json(
-      { error: "Failed to update photo tags" },
+      { error: "Failed to update photo" },
       { status: 500 },
     );
   }

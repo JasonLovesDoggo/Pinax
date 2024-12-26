@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import {
   Dialog,
@@ -18,7 +20,9 @@ interface PhotoUploaderProps {
   onUpload: (
     files: File[],
     tags: string[],
-    onUploadProgress: (progress: number) => void,
+    captureDate: string,
+    notes: string,
+    onProgress: (progress: number) => void,
   ) => Promise<void>;
 }
 
@@ -36,6 +40,8 @@ const PRESET_TAGS = [
 export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [captureDate, setCaptureDate] = useState("");
+  const [notes, setNotes] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState<
@@ -54,7 +60,7 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (files.length === 0) return;
+    if (files.length === 0 || !captureDate) return;
 
     setIsUploading(true);
     setUploadProgress(0);
@@ -70,7 +76,7 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
         setUploadProgress(progress);
       };
 
-      await onUpload(files, selectedTags, updateProgress);
+      await onUpload(files, selectedTags, captureDate, notes, updateProgress);
       setUploadStatus("success");
     } catch (error) {
       console.error("Error uploading photos:", error);
@@ -83,6 +89,8 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
   const resetUpload = () => {
     setFiles([]);
     setSelectedTags([]);
+    setCaptureDate("");
+    setNotes("");
     setUploadProgress(0);
     setUploadStatus("idle");
   };
@@ -90,6 +98,27 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <DragDropZone onFileDrop={handleFileDrop} files={files} />
+
+      <div>
+        <Label htmlFor="captureDate">Capture Date</Label>
+        <Input
+          type="date"
+          id="captureDate"
+          value={captureDate}
+          onChange={(e) => setCaptureDate(e.target.value)}
+          required
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="notes">Notes</Label>
+        <Textarea
+          id="notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder="Add any additional notes here..."
+        />
+      </div>
 
       <div>
         <Label className="mb-2 block">Select Tags</Label>
@@ -109,9 +138,7 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
 
       <Button
         type="submit"
-        disabled={
-          files.length === 0 || selectedTags.length === 0 || isUploading
-        }
+        disabled={files.length === 0 || !captureDate || isUploading}
       >
         Upload Photos
       </Button>

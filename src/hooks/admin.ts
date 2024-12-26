@@ -1,10 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-
-interface Photo {
-  id: string;
-  url: string;
-  tags: string[];
-}
+import { Photo } from "@/lib/photos/utils";
 
 export function useAdminPhotos() {
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -13,7 +8,6 @@ export function useAdminPhotos() {
     try {
       const response = await fetch("/api/admin/photos");
       const data = await response.json();
-      console.table(data);
       setPhotos(data);
     } catch (error) {
       console.error("Error fetching photos:", error);
@@ -28,6 +22,8 @@ export function useAdminPhotos() {
     async (
       files: File[],
       tags: string[],
+      captureDate: string,
+      notes: string,
       onProgress: (progress: number) => void,
     ) => {
       try {
@@ -35,6 +31,8 @@ export function useAdminPhotos() {
           const formData = new FormData();
           formData.append("file", file);
           formData.append("tags", JSON.stringify(tags));
+          formData.append("captureDate", captureDate);
+          formData.append("notes", notes);
 
           const response = await fetch("/api/admin/photos", {
             method: "POST",
@@ -73,25 +71,25 @@ export function useAdminPhotos() {
     [fetchPhotos],
   );
 
-  const updatePhotoTags = useCallback(
-    async (id: string, tags: string[]) => {
+  const updatePhoto = useCallback(
+    async (photo: Photo) => {
       try {
-        const response = await fetch(`/api/admin/photos/${id}`, {
+        const response = await fetch(`/api/admin/photos/${photo.id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ tags }),
+          body: JSON.stringify(photo),
         });
-        if (!response.ok) throw new Error("Failed to update photo tags");
+        if (!response.ok) throw new Error("Failed to update photo");
         await fetchPhotos();
       } catch (error) {
-        console.error("Error updating photo tags:", error);
+        console.error("Error updating photo:", error);
         throw error;
       }
     },
     [fetchPhotos],
   );
 
-  return { photos, uploadPhotos, deletePhoto, updatePhotoTags };
+  return { photos, uploadPhotos, deletePhoto, updatePhoto };
 }

@@ -8,8 +8,7 @@ import { useAdminPhotos } from "@/hooks/admin";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("upload");
-  const { photos, uploadPhotos, deletePhoto, updatePhotoTags } =
-    useAdminPhotos();
+  const { photos, uploadPhotos, deletePhoto, updatePhoto } = useAdminPhotos();
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -24,7 +23,7 @@ export default function AdminPanel() {
         <PhotoList
           photos={photos}
           onDelete={deletePhoto}
-          onUpdateTags={updatePhotoTags}
+          onUpdate={updatePhoto}
         />
       </TabsContent>
     </Tabs>
