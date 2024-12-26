@@ -1,0 +1,27 @@
+{
+  "name": "render2",
+  "version": "1.4.1",
+  "author": "kotx",
+  "description": "A Cloudflare worker for proxying readonly requests to Cloudflare R2",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "wrangler dev --remote",
+    "deploy": "wrangler publish",
+    "prepublishOnly": "tsc"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240129.0",
+    "@types/range-parser": "^1.2.7",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.26.0"
+  },
+  "dependencies": {
+    "range-parser": "^1.2.1"
+  },
+  "packageManager": "pnpm@8.14.3"
+}
