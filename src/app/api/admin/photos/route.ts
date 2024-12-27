@@ -1,29 +1,32 @@
 import { NextResponse } from "next/server";
-import {
-  _Object,
-  ListObjectsV2Command,
-  PutObjectCommand,
-} from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import { createPhotoKey, parsePhotoKey, s3Client } from "@/lib/photos/utils";
-import { env } from "@/env";
-
-const R2_BUCKET_NAME = env.R2_BUCKET_NAME;
+import {
+  getPhotoMetadata,
+  getPhotoUrl,
+  Photo,
+  setPhotoMetadata,
+  uploadPhotoToR2,
+} from "@/lib/photos/utils";
+import kv from "@/lib/kv";
 
 export async function GET(request: Request) {
-  if (env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV !== "development") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const command = new ListObjectsV2Command({ Bucket: R2_BUCKET_NAME });
-    const response = await s3Client.send(command);
+    const keys = await kv.keys("*");
+    const photos: Photo[] = [];
 
-    const photos = await Promise.all(
-      (response.Contents || []).map(async (s3object: _Object) => {
-        return parsePhotoKey(s3object.Key!);
-      }),
-    );
+    for (const key of keys) {
+      const metadata = await getPhotoMetadata(key);
+      if (metadata) {
+        photos.push({
+          ...metadata,
+          url: getPhotoUrl(key),
+        });
+      }
+    }
 
     return NextResponse.json(photos);
   } catch (error) {
@@ -47,18 +50,23 @@ export async function POST(request: Request) {
     const captureDate = formData.get("captureDate") as string;
     const notes = formData.get("notes") as string;
 
-    // const fileExtension = file.name.split(".").pop();
+    const fileExtension = file.name.split(".").pop();
     const id = uuidv4();
-    const key = createPhotoKey({ id, tags, captureDate, notes });
+    const key = `${id}.${fileExtension}`;
 
-    const putObjectCommand = new PutObjectCommand({
-      Bucket: R2_BUCKET_NAME,
-      Key: key,
-      Body: Buffer.from(await file.arrayBuffer()),
-      ContentType: file.type,
-    });
+    const metadata: Photo = {
+      id,
+      tags,
+      captureDate,
+      notes,
+    };
 
-    await s3Client.send(putObjectCommand);
+    await uploadPhotoToR2(
+      key,
+      Buffer.from(await file.arrayBuffer()),
+      file.type,
+    );
+    await setPhotoMetadata(key, metadata);
 
     return NextResponse.json({ success: true });
   } catch (error) {

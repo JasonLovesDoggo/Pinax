@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import {
-  DeleteObjectCommand,
-  GetObjectCommand,
-  PutObjectCommand,
-} from "@aws-sdk/client-s3";
-import { createPhotoKey, s3Client } from "@/lib/photos/utils";
-
-const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
+  deletePhotoFromR2,
+  deletePhotoMetadata,
+  Photo,
+  setPhotoMetadata,
+} from "@/lib/photos/utils";
 
 export async function DELETE(
   request: Request,
@@ -17,12 +15,8 @@ export async function DELETE(
   }
 
   try {
-    const command = new DeleteObjectCommand({
-      Bucket: R2_BUCKET_NAME,
-      Key: params.id,
-    });
-
-    await s3Client.send(command);
+    await deletePhotoFromR2(params.id);
+    await deletePhotoMetadata(params.id);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -43,33 +37,8 @@ export async function PATCH(
   }
 
   try {
-    const updatedPhoto = await request.json();
-
-    // Get the existing object
-    const getCommand = new GetObjectCommand({
-      Bucket: R2_BUCKET_NAME,
-      Key: params.id,
-    });
-    const existingObject = await s3Client.send(getCommand);
-
-    // Create a new key with updated metadata
-    const newKey = createPhotoKey(updatedPhoto);
-
-    // Copy the object with the new key
-    const putCommand = new PutObjectCommand({
-      Bucket: R2_BUCKET_NAME,
-      Key: newKey,
-      Body: existingObject.Body,
-      ContentType: existingObject.ContentType,
-    });
-    await s3Client.send(putCommand);
-
-    // Delete the old object
-    const deleteCommand = new DeleteObjectCommand({
-      Bucket: R2_BUCKET_NAME,
-      Key: params.id,
-    });
-    await s3Client.send(deleteCommand);
+    const updatedPhoto: Photo = await request.json();
+    await setPhotoMetadata(params.id, updatedPhoto);
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -7,11 +7,11 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: [process.env.R2_DOMAIN],
+    domains: [process.env.R2_CACHE_DOMAIN],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: process.env.R2_DOMAIN,
+        hostname: process.env.R2_CACHE_DOMAIN,
         pathname: "/**",
       },
       {

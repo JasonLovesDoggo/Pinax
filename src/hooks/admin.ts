@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Photo } from "@/lib/photos/utils";
 
 export function useAdminPhotos() {
-  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [photos, setPhotos] = useState<(Photo & { url: string })[]>([]);
 
   const fetchPhotos = useCallback(async () => {
     try {

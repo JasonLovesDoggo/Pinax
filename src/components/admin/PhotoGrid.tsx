@@ -4,16 +4,14 @@ import { useState } from "react";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Photo } from "@/lib/photos/utils";
 import { usePhotos } from "@/hooks/photos";
-import { cloudflareR2Loader } from "@/lib/photos/cloudflareLoader";
-import { Spinner } from "@/components/ui/spinner";
 
 export default function PhotoGrid() {
   const { photos, loadMore, hasMore, loading } = usePhotos();
@@ -30,7 +28,7 @@ export default function PhotoGrid() {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {photos.map((photo: Photo, index: number) => (
+        {photos.map((photo, index) => (
           <TooltipProvider key={photo.id}>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -45,7 +43,6 @@ export default function PhotoGrid() {
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="rounded-lg object-cover"
                     loading="lazy"
-                    loader={cloudflareR2Loader}
                   />
                 </div>
               </TooltipTrigger>
@@ -77,7 +74,6 @@ export default function PhotoGrid() {
                 sizes="100vw"
                 className="object-contain"
                 priority
-                loader={cloudflareR2Loader}
               />
             </div>
           )}

@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { _Object, ListObjectsV2Command } from "@aws-sdk/client-s3";
-import {
-  getSignedPhotoUrl,
-  parsePhotoKey,
-  Photo,
-  s3Client,
-} from "@/lib/photos/utils";
-
-const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
+import { getPhotoMetadata, getPhotoUrl, Photo } from "@/lib/photos/utils";
+import kv from "@/lib/kv";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -17,24 +10,22 @@ export async function GET(request: NextRequest) {
   const order = searchParams.get("order") || "desc";
 
   try {
-    const command = new ListObjectsV2Command({
-      Bucket: R2_BUCKET_NAME,
-      MaxKeys: 1000, // Fetch more to allow for filtering
-    });
+    const keys = await kv.keys("*");
+    let photos: (Photo & { url: string })[] = [];
 
-    const response = await s3Client.send(command);
-
-    let photos = await Promise.all(
-      (response.Contents || []).map(async (object: _Object) => {
-        const photo = parsePhotoKey(object.Key!);
-        const url = await getSignedPhotoUrl(object.Key!);
-        return { ...photo, url };
-      }),
-    );
+    for (const key of keys) {
+      const metadata = await getPhotoMetadata(key);
+      if (metadata) {
+        photos.push({
+          ...metadata,
+          url: getPhotoUrl(key),
+        });
+      }
+    }
 
     // Filter by tag if provided
     if (tag) {
-      photos = photos.filter((photo: Photo) => photo.tags.includes(tag));
+      photos = photos.filter((photo) => photo.tags.includes(tag));
     }
 
     // Sort by capture date

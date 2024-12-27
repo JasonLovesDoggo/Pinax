@@ -18,7 +18,10 @@ export const env = createEnv({
     CF_ACCESS_KEY_ID: z.string(),
     CF_SECRET_ACCESS_KEY: z.string(),
     R2_BUCKET_NAME: z.string(),
-    R2_DOMAIN: z.string().optional(),
+    R2_CACHE_DOMAIN: z.string().optional(),
+
+    // Vercel KV
+    KV_URL: z.string(),
   },
 
   /**
@@ -45,7 +48,10 @@ export const env = createEnv({
     CF_ACCESS_KEY_ID: process.env.CF_ACCESS_KEY_ID,
     CF_SECRET_ACCESS_KEY: process.env.CF_SECRET_ACCESS_KEY,
     R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
-    R2_DOMAIN: process.env.R2_DOMAIN,
+    R2_CACHE_DOMAIN: process.env.R2_CACHE_DOMAIN,
+
+    // Vercel KV
+    KV_URL: process.env.KV_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

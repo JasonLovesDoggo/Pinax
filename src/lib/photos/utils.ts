@@ -1,10 +1,13 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { env } from "@/env";
+import kv from "@/lib/kv";
 
 export interface Photo {
   id: string;
-  url: string;
   tags: string[];
   captureDate: string;
   notes?: string;
@@ -14,51 +17,50 @@ export const s3Client = new S3Client({
   region: "auto",
   endpoint: `https://${env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com`,
   credentials: {
-    accessKeyId: env.CF_ACCESS_KEY_ID!,
-    secretAccessKey: env.CF_SECRET_ACCESS_KEY!,
+    accessKeyId: env.CF_ACCESS_KEY_ID,
+    secretAccessKey: env.CF_SECRET_ACCESS_KEY,
   },
 });
 
-export async function getSignedPhotoUrl(key: string): Promise<string> {
-  return getSignedUrl(
-    s3Client,
-    new PutObjectCommand({
-      Bucket: env.R2_BUCKET_NAME,
-      Key: key,
-      Metadata: {
-        "x-amz-meta-width": "{width}",
-        "x-amz-meta-quality": "{quality}",
-      },
-    }),
-    { expiresIn: 3600 },
-  );
+export async function getPhotoMetadata(key: string): Promise<Photo | null> {
+  return await kv.get<Photo>(key);
 }
 
-export function parsePhotoKey(key: string): Photo {
-  const [id, metadataString] = key.split("_");
-  const [tagsString, dateString, ...notesArray] = metadataString.split(".");
-  const tags = tagsString.split(",");
-  const captureDate = new Date(parseInt(dateString)).toISOString();
-  const notes = notesArray.join(".") || undefined;
-
-  console.log(key);
-  return {
-    id: id as string,
-    tags: tags,
-    captureDate: captureDate,
-    notes: notes,
-    url: R2IdToUrl(id as string),
-  };
+export async function setPhotoMetadata(
+  key: string,
+  metadata: Photo,
+): Promise<void> {
+  await kv.set(key, metadata);
 }
 
-export function createPhotoKey(photo: Omit<Photo, "url">): string {
-  const { id, tags, captureDate, notes } = photo;
-  const dateString = new Date(captureDate).getTime().toString();
-  const metadataParts = [tags.join(","), dateString];
-  if (notes) metadataParts.push(notes);
-  return `${id}_${metadataParts.join(".")}`;
+export async function deletePhotoMetadata(key: string): Promise<void> {
+  await kv.del(key);
 }
 
-const R2IdToUrl = (id: string) => {
-  return "https://" + env.R2_DOMAIN + "/" + id;
-};
+export function getPhotoUrl(key: string): string {
+  return `https://${env.R2_CACHE_DOMAIN}/${key}`;
+}
+
+export async function uploadPhotoToR2(
+  key: string,
+  file: Buffer,
+  contentType: string,
+): Promise<void> {
+  const command = new PutObjectCommand({
+    Bucket: env.R2_BUCKET_NAME,
+    Key: key,
+    Body: file,
+    ContentType: contentType,
+  });
+
+  await s3Client.send(command);
+}
+
+export async function deletePhotoFromR2(key: string): Promise<void> {
+  const command = new DeleteObjectCommand({
+    Bucket: env.R2_BUCKET_NAME,
+    Key: key,
+  });
+
+  await s3Client.send(command);
+}

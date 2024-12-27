@@ -41,9 +41,9 @@ async function processImage(
   const slug = key.split(".")[0];
 
   return {
-    href: `https://${env.R2_DOMAIN}/${key}`,
+    href: `https://${env.R2_CACHE_DOMAIN}/${key}`,
     thumbnailHref: thumbnailDataUrl,
-    src: `https://${env.R2_DOMAIN}/${key}`,
+    src: `https://${env.R2_CACHE_DOMAIN}/${key}`,
     alt: slug as string, // slug cant be empty
     width: width || 0,
     height: height || 0,
