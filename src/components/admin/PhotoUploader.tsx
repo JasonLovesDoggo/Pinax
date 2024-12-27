@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -12,9 +11,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CalendarIcon, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import DragDropZone from "./DragDropZone";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface PhotoUploaderProps {
   onUpload: (
@@ -40,7 +47,7 @@ const PRESET_TAGS = [
 export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [captureDate, setCaptureDate] = useState("");
+  const [captureDate, setCaptureDate] = useState<Date>();
   const [notes, setNotes] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -76,7 +83,13 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
         setUploadProgress(progress);
       };
 
-      await onUpload(files, selectedTags, captureDate, notes, updateProgress);
+      await onUpload(
+        files,
+        selectedTags,
+        captureDate.toISOString(),
+        notes,
+        updateProgress,
+      );
       setUploadStatus("success");
     } catch (error) {
       console.error("Error uploading photos:", error);
@@ -89,7 +102,7 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
   const resetUpload = () => {
     setFiles([]);
     setSelectedTags([]);
-    setCaptureDate("");
+    setCaptureDate(undefined);
     setNotes("");
     setUploadProgress(0);
     setUploadStatus("idle");
@@ -101,13 +114,32 @@ export default function PhotoUploader({ onUpload }: PhotoUploaderProps) {
 
       <div>
         <Label htmlFor="captureDate">Capture Date</Label>
-        <Input
-          type="date"
-          id="captureDate"
-          value={captureDate}
-          onChange={(e) => setCaptureDate(e.target.value)}
-          required
-        />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !captureDate && "text-muted-foreground",
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {captureDate ? (
+                format(captureDate, "PPP")
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={captureDate}
+              onSelect={setCaptureDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
       </div>
 
       <div>

@@ -1,14 +1,27 @@
-import { Suspense } from "react";
+"use client";
+
+import { Suspense, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import SortOrder from "@/components/photos/SortOrder";
+import { gsap } from "gsap";
 import TagFilter from "@/components/photos/TagFilter";
+import SortOrder from "@/components/photos/SortOrder";
 import PhotoGrid from "@/components/admin/PhotoGrid";
 
 export default function PhotoPage() {
+  useEffect(() => {
+    gsap.from(".animate-in", {
+      opacity: 0,
+      y: 20,
+      stagger: 0.1,
+      duration: 0.5,
+      ease: "power3.out",
+    });
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-3xl font-bold">Photo Gallery</h1>
-      <div className="mb-4 flex items-center justify-between">
+      <h1 className="mb-8 text-3xl font-bold animate-in">Photo Gallery</h1>
+      <div className="mb-4 flex flex-col items-start justify-between space-y-4 animate-in sm:flex-row sm:items-center sm:space-y-0">
         <TagFilter />
         <SortOrder />
       </div>

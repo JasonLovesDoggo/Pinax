@@ -22,7 +22,7 @@ export default function SortOrder() {
 
   return (
     <Select value={currentOrder} onValueChange={handleOrderChange}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="bg-background w-[180px]">
         <SelectValue placeholder="Sort order" />
       </SelectTrigger>
       <SelectContent>

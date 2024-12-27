@@ -8,9 +8,10 @@ import {
   uploadPhotoToR2,
 } from "@/lib/photos/utils";
 import kv from "@/lib/kv";
+import { env } from "@/env";
 
 export async function GET(request: Request) {
-  if (process.env.NODE_ENV !== "development") {
+  if (env.NODE_ENV !== "development") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -59,6 +60,7 @@ export async function POST(request: Request) {
       tags,
       captureDate,
       notes,
+      url: getPhotoUrl(key),
     };
 
     await uploadPhotoToR2(

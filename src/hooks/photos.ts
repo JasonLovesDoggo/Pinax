@@ -24,7 +24,13 @@ export function usePhotos() {
       if (newPhotos.length < PAGE_SIZE) {
         setHasMore(false);
       }
-      setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
+      setPhotos((prevPhotos) => {
+        const uniquePhotos = newPhotos.filter(
+          (newPhoto: Photo) =>
+            !prevPhotos.some((prevPhoto) => prevPhoto.id === newPhoto.id),
+        );
+        return [...prevPhotos, ...uniquePhotos];
+      });
       setPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error("Error fetching photos:", error);

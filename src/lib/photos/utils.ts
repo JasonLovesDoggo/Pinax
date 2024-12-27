@@ -11,6 +11,7 @@ export interface Photo {
   tags: string[];
   captureDate: string;
   notes?: string;
+  url: string;
 }
 
 export const s3Client = new S3Client({
@@ -23,7 +24,12 @@ export const s3Client = new S3Client({
 });
 
 export async function getPhotoMetadata(key: string): Promise<Photo | null> {
-  return await kv.get<Photo>(key);
+  const metadata = await kv.get<Photo>(key);
+  if (!metadata) return null;
+  return {
+    ...metadata,
+    url: getPhotoUrl(key),
+  };
 }
 
 export async function setPhotoMetadata(

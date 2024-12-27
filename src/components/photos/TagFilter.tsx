@@ -11,7 +11,7 @@ export default function TagFilter() {
   const selectedTag = searchParams.get("tag");
 
   useEffect(() => {
-    fetch("/api/photos/tags")
+    fetch("/api/tags")
       .then((res) => res.json())
       .then((data) => setTags(data));
   }, []);
@@ -32,7 +32,7 @@ export default function TagFilter() {
         <Badge
           key={tag}
           variant={tag === selectedTag ? "default" : "outline"}
-          className="cursor-pointer"
+          className={`cursor-pointer ${tag === selectedTag ? "bg-primary text-primary-foreground" : ""}`}
           onClick={() => handleTagClick(tag)}
         >
           {tag}
