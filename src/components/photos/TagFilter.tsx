@@ -11,7 +11,7 @@ export default function TagFilter() {
   const selectedTag = searchParams.get("tag");
 
   useEffect(() => {
-    fetch("/api/tags")
+    fetch("/api/photos/tags")
       .then((res) => res.json())
       .then((data) => setTags(data));
   }, []);

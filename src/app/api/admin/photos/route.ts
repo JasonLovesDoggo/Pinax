@@ -56,19 +56,15 @@ export async function POST(request: Request) {
     const key = `${id}.${fileExtension}`;
 
     const metadata: Photo = {
-      id,
+      key,
       tags,
       captureDate,
       notes,
       url: getPhotoUrl(key),
     };
 
-    await uploadPhotoToR2(
-      key,
-      Buffer.from(await file.arrayBuffer()),
-      file.type,
-    );
-    await setPhotoMetadata(key, metadata);
+    await uploadPhotoToR2(id, Buffer.from(await file.arrayBuffer()), file.type);
+    await setPhotoMetadata(id, metadata);
 
     return NextResponse.json({ success: true });
   } catch (error) {

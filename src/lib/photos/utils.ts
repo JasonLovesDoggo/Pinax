@@ -7,7 +7,7 @@ import { env } from "@/env";
 import kv from "@/lib/kv";
 
 export interface Photo {
-  id: string;
+  id: string /*todo: switch to key (i.e. contains extension)  */;
   tags: string[];
   captureDate: string;
   notes?: string;
@@ -69,4 +69,9 @@ export async function deletePhotoFromR2(key: string): Promise<void> {
   });
 
   await s3Client.send(command);
+}
+
+export function getRawId(id: string): string {
+  // Removes the extension from the ID
+  return id.split(".")[0] as string;
 }

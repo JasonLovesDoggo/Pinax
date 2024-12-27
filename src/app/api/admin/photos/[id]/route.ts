@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import {
   deletePhotoFromR2,
   deletePhotoMetadata,
+  getRawId,
   Photo,
   setPhotoMetadata,
 } from "@/lib/photos/utils";
@@ -38,7 +39,7 @@ export async function PATCH(
 
   try {
     const updatedPhoto: Photo = await request.json();
-    await setPhotoMetadata(params.id, updatedPhoto);
+    await setPhotoMetadata(getRawId(params.id), updatedPhoto);
 
     return NextResponse.json({ success: true });
   } catch (error) {

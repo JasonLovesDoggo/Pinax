@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { usePhotos } from "@/hooks/photos";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Tooltip,
@@ -23,8 +24,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
+import Masonry from "react-masonry-css";
 import { Photo } from "@/lib/photos/utils";
-import { usePhotos } from "@/hooks/photos";
 
 export default function PhotoGrid() {
   const { photos, loadMore, hasMore, loading } = usePhotos();
@@ -73,23 +74,34 @@ export default function PhotoGrid() {
     setSelectedPhoto(null);
   };
 
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1,
+  };
+
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="-ml-4 flex w-auto"
+        columnClassName="pl-4 bg-clip-padding"
+      >
         {photos.map((photo, index) => (
           <TooltipProvider key={photo.id}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div
-                  className="relative aspect-square cursor-pointer"
+                  className="relative mb-4 cursor-pointer"
                   onClick={() => setSelectedPhoto(photo)}
                 >
                   <Image
                     src={photo.url}
                     alt={photo.notes || `Photo ${index + 1}`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="rounded-lg object-cover"
+                    width={500}
+                    height={500}
+                    className="h-auto w-full rounded-lg object-cover"
                     loading="lazy"
                     ref={
                       selectedPhoto?.id === photo.id ? selectedImageRef : null
@@ -105,7 +117,7 @@ export default function PhotoGrid() {
             </Tooltip>
           </TooltipProvider>
         ))}
-      </div>
+      </Masonry>
       {hasMore && (
         <div ref={ref} className="flex h-20 items-center justify-center">
           {loading && <Spinner />}
@@ -119,21 +131,23 @@ export default function PhotoGrid() {
         open={!!selectedPhoto}
         onOpenChange={() => setSelectedPhoto(null)}
       >
-        <DialogContent className="z-50 max-w-4xl p-0" ref={dialogContentRef}>
+        <DialogContent
+          className="z-50 max-h-[90vh] max-w-[90vw] p-0"
+          ref={dialogContentRef}
+        >
           <DialogTitle className="sr-only">Photo Details</DialogTitle>
           {selectedPhoto && (
             <div className="flex flex-col md:flex-row">
-              <div className="relative aspect-square md:w-2/3">
+              <div className="relative flex h-[calc(90vh-4rem)] flex-shrink-0 items-center justify-center md:w-2/3">
                 <Image
                   src={selectedPhoto.url}
                   alt={selectedPhoto.notes || "Selected photo"}
                   fill
-                  sizes="(max-width: 768px) 100vw, 66vw"
-                  className="object-cover"
+                  className="object-contain"
                   priority
                 />
               </div>
-              <Card className="rounded-none border-0 md:w-1/3">
+              <Card className="max-h-[calc(90vh-4rem)] flex-shrink-0 overflow-auto rounded-none border-0 md:w-1/3">
                 <CardHeader>
                   <CardTitle>Photo Details</CardTitle>
                   <CardDescription>

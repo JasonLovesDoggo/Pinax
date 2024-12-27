@@ -42,7 +42,7 @@ export default function PhotoList({
           <div className="relative aspect-square">
             <Image
               src={photo.url}
-              alt={`Photo ${photo.id}`}
+              alt={photo.notes || `Photo ${photo.id}`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="rounded-lg object-cover"

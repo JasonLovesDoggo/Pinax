@@ -22,7 +22,7 @@ export async function generateMetadata({
   if (!photo) return {};
 
   return {
-    title: `Photo ${photo.id}`,
+    title: `Photo ${photo.id}  - Jason Cameron`,
     description:
       photo.notes ||
       `Photo taken on ${new Date(photo.captureDate).toLocaleDateString()}`,
@@ -41,13 +41,13 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="overflow-hidden">
-        <div className="relative aspect-video">
+      <Card className="mx-auto max-h-[90vh] max-w-[90vw] overflow-hidden">
+        <div className="relative flex h-[calc(90vh-12rem)] items-center justify-center">
           <Image
             src={getPhotoUrl(params.id)}
             alt={photo.notes || `Photo ${photo.id}`}
             fill
-            className="object-cover"
+            className="object-contain"
             priority
           />
         </div>
