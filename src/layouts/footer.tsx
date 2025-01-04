@@ -4,6 +4,7 @@ import Site from "@/config/site";
 import { IconBrandGithub } from "@tabler/icons-react";
 import { ServerStatus } from "@/components/widgets/server-status";
 import { env } from "@/env";
+import Copyright from "@/components/misc/Copyright";
 
 function getLatestCommit() {
   const sha = env.VERCEL_GIT_COMMIT_SHA;
@@ -17,8 +18,6 @@ export const Footer = async ({
   className,
   ...props
 }: ComponentProps<"footer">) => {
-  const year = String(new Date().getFullYear());
-
   return (
     <footer
       className={clsx("flex flex-col pt-5 font-medium md:pt-1", className)}
@@ -39,13 +38,7 @@ export const Footer = async ({
           </span>
         </a>
 
-        <span className="text-zinc-350 dark:text-[#898992]">
-          ©{" "}
-          <time className="hidden sm:inline" dateTime={String(year)}>
-            {year}{" "}
-          </time>
-          {Site.author}
-        </span>
+        <Copyright />
         <ServerStatus />
       </div>
     </footer>
