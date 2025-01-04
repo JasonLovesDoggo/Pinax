@@ -7,7 +7,7 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   experimental: {
-    webpackMemoryOptimizations: true
+    webpackMemoryOptimizations: true,
   },
   images: {
     remotePatterns: [
