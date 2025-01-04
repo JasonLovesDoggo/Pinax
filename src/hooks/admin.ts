@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Photo } from "@/lib/photos/utils";
+import { revalidatePath } from "next/cache";
 
 export function useAdminPhotos() {
   const [photos, setPhotos] = useState<(Photo & { url: string })[]>([]);
@@ -15,7 +16,7 @@ export function useAdminPhotos() {
   }, []);
 
   useEffect(() => {
-    fetchPhotos();
+    void fetchPhotos();
   }, [fetchPhotos]);
 
   const uploadPhotos = useCallback(
@@ -46,7 +47,8 @@ export function useAdminPhotos() {
           onProgress(100 / files.length);
         }
 
-        await fetchPhotos();
+        revalidatePath("/photos");
+        void fetchPhotos();
       } catch (error) {
         console.error("Error uploading photos:", error);
         throw error;
@@ -56,12 +58,13 @@ export function useAdminPhotos() {
   );
 
   const deletePhoto = useCallback(
-    async (id: string) => {
+    async (key: string) => {
       try {
-        const response = await fetch(`/api/admin/photos/${id}`, {
+        const response = await fetch(`/api/admin/photos/${key}`, {
           method: "DELETE",
         });
         if (!response.ok) throw new Error("Failed to delete photo");
+        revalidatePath("/photos");
         await fetchPhotos();
       } catch (error) {
         console.error("Error deleting photo:", error);
@@ -74,7 +77,7 @@ export function useAdminPhotos() {
   const updatePhoto = useCallback(
     async (photo: Photo) => {
       try {
-        const response = await fetch(`/api/admin/photos/${photo.id}`, {
+        const response = await fetch(`/api/admin/photos/${photo.key}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -82,6 +85,7 @@ export function useAdminPhotos() {
           body: JSON.stringify(photo),
         });
         if (!response.ok) throw new Error("Failed to update photo");
+        revalidatePath("/photos");
         await fetchPhotos();
       } catch (error) {
         console.error("Error updating photo:", error);
