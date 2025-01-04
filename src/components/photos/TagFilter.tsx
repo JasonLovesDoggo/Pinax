@@ -23,7 +23,7 @@ export default function TagFilter() {
     } else {
       params.set("tag", tag);
     }
-    router.push(`/?${params.toString()}`);
+    router.push(`/photos?${params.toString()}`);
   };
 
   return (
