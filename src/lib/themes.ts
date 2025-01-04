@@ -20,13 +20,6 @@ export const generateRandomColorName = (
   );
 };
 
-export const getRandomAccent = () => {
-  const accents = flavors.mocha.colorEntries
-    .filter(([_, color]) => color.accent)
-    .map(([colorName]) => colorName);
-  return accents[Math.floor(Math.random() * accents.length)];
-};
-
 export const getRandomAccentHex = (): string => {
   // Get mocha accent colors directly from the flavors object
   const mochaAccentColors = flavors.mocha.colorEntries

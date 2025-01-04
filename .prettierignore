@@ -1,0 +1,4 @@
+# Ignore .mdx files because codeblocks indside .mdx files are broken with prettier & it breaks frontmatter
+# See: https://github.com/prettier/prettier/issues/12209
+content/**/*.mdx
+content/**/*.md
