@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Photo } from "@/lib/photos/utils";
-import { revalidateTag } from "next/cache";
+import { revalidatePhotos } from "@/actions/photos";
 
 export function useAdminPhotos() {
   const [photos, setPhotos] = useState<(Photo & { url: string })[]>([]);
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
 
   const fetchPhotos = useCallback(async () => {
     try {
@@ -15,9 +16,20 @@ export function useAdminPhotos() {
     }
   }, []);
 
+  const fetchTags = useCallback(async () => {
+    try {
+      const response = await fetch("/api/photos/tags");
+      const data = await response.json();
+      setAvailableTags(data);
+    } catch (error) {
+      console.error("Error fetching tags:", error);
+    }
+  }, []);
+
   useEffect(() => {
     void fetchPhotos();
-  }, [fetchPhotos]);
+    void fetchTags();
+  }, [fetchPhotos, fetchTags]);
 
   const uploadPhotos = useCallback(
     async (
@@ -34,11 +46,15 @@ export function useAdminPhotos() {
           formData.append("tags", JSON.stringify(tags));
           formData.append("captureDate", captureDate);
           formData.append("notes", notes);
+          const newTags = tags.filter((tag) => !availableTags.includes(tag));
 
-          const response = await fetch("/api/admin/photos", {
-            method: "POST",
-            body: formData,
-          });
+          const response = await fetch(
+            `/api/admin/photos${newTags.length > 0 ? "?tag_added=true" : ""}`,
+            {
+              method: "POST",
+              body: formData,
+            },
+          );
 
           if (!response.ok) {
             throw new Error(`Failed to upload file ${file.name}`);
@@ -46,8 +62,7 @@ export function useAdminPhotos() {
 
           onProgress(100 / files.length);
         }
-
-        revalidateTag("photos");
+        await revalidatePhotos();
         void fetchPhotos();
       } catch (error) {
         console.error("Error uploading photos:", error);
@@ -64,7 +79,7 @@ export function useAdminPhotos() {
           method: "DELETE",
         });
         if (!response.ok) throw new Error("Failed to delete photo");
-        revalidateTag("photos");
+        await revalidatePhotos();
         await fetchPhotos();
       } catch (error) {
         console.error("Error deleting photo:", error);
@@ -85,7 +100,7 @@ export function useAdminPhotos() {
           body: JSON.stringify(photo),
         });
         if (!response.ok) throw new Error("Failed to update photo");
-        revalidateTag("photos");
+        await revalidatePhotos();
         await fetchPhotos();
       } catch (error) {
         console.error("Error updating photo:", error);
@@ -95,5 +110,5 @@ export function useAdminPhotos() {
     [fetchPhotos],
   );
 
-  return { photos, uploadPhotos, deletePhoto, updatePhoto };
+  return { photos, availableTags, uploadPhotos, deletePhoto, updatePhoto };
 }

@@ -8,7 +8,8 @@ import { useAdminPhotos } from "@/hooks/admin";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("upload");
-  const { photos, uploadPhotos, deletePhoto, updatePhoto } = useAdminPhotos();
+  const { photos, availableTags, uploadPhotos, deletePhoto, updatePhoto } =
+    useAdminPhotos();
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -17,7 +18,14 @@ export default function AdminPanel() {
         <TabsTrigger value="manage">Manage Photos</TabsTrigger>
       </TabsList>
       <TabsContent value="upload">
-        <PhotoUploader onUpload={uploadPhotos} />
+        <div
+          className="bg-background/90 border-muted rounded-lg border p-6 backdrop-blur-md" // Added background and blur
+        >
+          <PhotoUploader
+            onUpload={uploadPhotos}
+            availableTags={availableTags}
+          />
+        </div>
       </TabsContent>
       <TabsContent value="manage">
         <PhotoList

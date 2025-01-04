@@ -6,8 +6,9 @@ import {
   uploadPhotoToR2,
 } from "@/lib/photos/utils";
 import kv from "@/lib/kv";
-import { revalidateTag, unstable_cache } from "next/cache";
-import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
+import { revalidatePhotos, revalidateTags } from "@/actions/photos";
 
 const getCachedPhotos = unstable_cache(
   async () => {
@@ -30,7 +31,7 @@ const getCachedPhotos = unstable_cache(
   { tags: ["photos"] },
 );
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const photos = await getCachedPhotos();
     return NextResponse.json(photos);
@@ -44,13 +45,20 @@ export async function GET(request: Request) {
 }
 
 /*Photo uploading*/
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;
     const tags = JSON.parse(formData.get("tags") as string);
     const captureDate = formData.get("captureDate") as string;
     const notes = formData.get("notes") as string;
+
+    const searchParams = request.nextUrl.searchParams;
+    const new_tag_added =
+      (searchParams.get("tag_added") || "").toLowerCase() == "true";
+    if (new_tag_added) {
+      await revalidateTags();
+    }
 
     const key = file.name;
     const metadata: Photo = {
@@ -68,7 +76,7 @@ export async function POST(request: Request) {
     );
     await setPhotoMetadata(key, metadata);
 
-    revalidateTag("photos");
+    await revalidatePhotos();
 
     return NextResponse.json({ success: true });
   } catch (error) {
