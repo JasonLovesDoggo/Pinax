@@ -2,10 +2,6 @@ import { env } from "@/env";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  if (process.env.NODE_ENV !== "development") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
     const { count, tags } = await request.json();
     const uploadURLs: string[] = [];
@@ -39,6 +35,7 @@ export async function POST(request: Request) {
       }
 
       uploadURLs.push(data.result.uploadURL);
+      console.log("Upload ID:", data.result.id);
       imageIds.push(data.result.id);
     }
 

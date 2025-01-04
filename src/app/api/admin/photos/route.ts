@@ -1,22 +1,18 @@
-import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
 import {
   getPhotoMetadata,
   getPhotoUrl,
-  Photo,
+  type Photo,
   setPhotoMetadata,
   uploadPhotoToR2,
 } from "@/lib/photos/utils";
 import kv from "@/lib/kv";
-import { env } from "@/env";
+import { revalidateTag, unstable_cache } from "next/cache";
+import { NextResponse } from "next/server";
+import { v4 as uuidv4 } from "uuid";
 
-export async function GET(request: Request) {
-  if (env.NODE_ENV !== "development") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  try {
-    const keys = await kv.keys("*");
+const getCachedPhotos = unstable_cache(
+  async () => {
+    const keys = await kv.keys("*"); // Expensive operation
     const photos: Photo[] = [];
 
     for (const key of keys) {
@@ -29,6 +25,15 @@ export async function GET(request: Request) {
       }
     }
 
+    return photos;
+  },
+  [],
+  { tags: ["photos"] },
+);
+
+export async function GET(request: Request) {
+  try {
+    const photos = await getCachedPhotos();
     return NextResponse.json(photos);
   } catch (error) {
     console.error("Error fetching photos:", error);
@@ -39,11 +44,8 @@ export async function GET(request: Request) {
   }
 }
 
+/*Photo uploading*/
 export async function POST(request: Request) {
-  if (process.env.NODE_ENV !== "development") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;
@@ -65,6 +67,8 @@ export async function POST(request: Request) {
 
     await uploadPhotoToR2(id, Buffer.from(await file.arrayBuffer()), file.type);
     await setPhotoMetadata(id, metadata);
+
+    revalidateTag("photos");
 
     return NextResponse.json({ success: true });
   } catch (error) {

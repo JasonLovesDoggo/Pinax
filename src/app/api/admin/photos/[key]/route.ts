@@ -9,15 +9,11 @@ import {
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { key: string } },
 ) {
-  if (process.env.NODE_ENV !== "development") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
-    await deletePhotoFromR2(params.id);
-    await deletePhotoMetadata(params.id);
+    await deletePhotoFromR2(params.key);
+    await deletePhotoMetadata(params.key);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -31,15 +27,11 @@ export async function DELETE(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { key: string } },
 ) {
-  if (process.env.NODE_ENV !== "development") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
     const updatedPhoto: Photo = await request.json();
-    await setPhotoMetadata(getRawId(params.id), updatedPhoto);
+    await setPhotoMetadata(getRawId(params.key), updatedPhoto);
 
     return NextResponse.json({ success: true });
   } catch (error) {
