@@ -8,7 +8,6 @@ import {
 import kv from "@/lib/kv";
 import { revalidateTag, unstable_cache } from "next/cache";
 import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
 
 const getCachedPhotos = unstable_cache(
   async () => {
@@ -53,10 +52,7 @@ export async function POST(request: Request) {
     const captureDate = formData.get("captureDate") as string;
     const notes = formData.get("notes") as string;
 
-    const fileExtension = file.name.split(".").pop();
-    const id = uuidv4();
-    const key = `${id}.${fileExtension}`;
-
+    const key = file.name;
     const metadata: Photo = {
       key,
       tags,
@@ -65,8 +61,12 @@ export async function POST(request: Request) {
       url: getPhotoUrl(key),
     };
 
-    await uploadPhotoToR2(id, Buffer.from(await file.arrayBuffer()), file.type);
-    await setPhotoMetadata(id, metadata);
+    await uploadPhotoToR2(
+      key,
+      Buffer.from(await file.arrayBuffer()),
+      file.type,
+    );
+    await setPhotoMetadata(key, metadata);
 
     revalidateTag("photos");
 

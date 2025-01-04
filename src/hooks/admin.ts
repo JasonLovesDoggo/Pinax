@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Photo } from "@/lib/photos/utils";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export function useAdminPhotos() {
   const [photos, setPhotos] = useState<(Photo & { url: string })[]>([]);
@@ -47,7 +47,7 @@ export function useAdminPhotos() {
           onProgress(100 / files.length);
         }
 
-        revalidatePath("/photos");
+        revalidateTag("photos");
         void fetchPhotos();
       } catch (error) {
         console.error("Error uploading photos:", error);
@@ -64,7 +64,7 @@ export function useAdminPhotos() {
           method: "DELETE",
         });
         if (!response.ok) throw new Error("Failed to delete photo");
-        revalidatePath("/photos");
+        revalidateTag("photos");
         await fetchPhotos();
       } catch (error) {
         console.error("Error deleting photo:", error);
@@ -85,7 +85,7 @@ export function useAdminPhotos() {
           body: JSON.stringify(photo),
         });
         if (!response.ok) throw new Error("Failed to update photo");
-        revalidatePath("/photos");
+        revalidateTag("photos");
         await fetchPhotos();
       } catch (error) {
         console.error("Error updating photo:", error);

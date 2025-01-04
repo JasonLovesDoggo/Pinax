@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { Photo } from "@/lib/photos/utils";
 
 const PAGE_SIZE = 20;
+export const dynamic = "force-static";
 
 export function usePhotos() {
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -27,7 +28,7 @@ export function usePhotos() {
       setPhotos((prevPhotos) => {
         const uniquePhotos = newPhotos.filter(
           (newPhoto: Photo) =>
-            !prevPhotos.some((prevPhoto) => prevPhoto.id === newPhoto.id),
+            !prevPhotos.some((prevPhoto) => prevPhoto.key === newPhoto.key),
         );
         return [...prevPhotos, ...uniquePhotos];
       });
@@ -39,16 +40,18 @@ export function usePhotos() {
     }
   }, [page, loading, hasMore, searchParams]);
 
+  // Reset photos and fetch new data when searchParams change
   useEffect(() => {
     setPhotos([]);
     setPage(1);
     setHasMore(true);
-    fetchPhotos();
-  }, [searchParams]);
+    void fetchPhotos();
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Load more photos when requested
   const loadMore = useCallback(() => {
     if (!loading && hasMore) {
-      fetchPhotos();
+      void fetchPhotos();
     }
   }, [fetchPhotos, loading, hasMore]);
 

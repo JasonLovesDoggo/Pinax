@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,6 +26,7 @@ import Masonry from "react-masonry-css";
 import { Photo } from "@/lib/photos/utils";
 
 export default function PhotoGrid() {
+  "use client";
   const { photos, loadMore, hasMore, loading } = usePhotos();
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const router = useRouter();
@@ -89,7 +88,7 @@ export default function PhotoGrid() {
         columnClassName="pl-4 bg-clip-padding"
       >
         {photos.map((photo, index) => (
-          <TooltipProvider key={photo.id}>
+          <TooltipProvider key={photo.key}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <div
@@ -104,7 +103,7 @@ export default function PhotoGrid() {
                     className="h-auto w-full rounded-lg object-cover"
                     loading="lazy"
                     ref={
-                      selectedPhoto?.id === photo.id ? selectedImageRef : null
+                      selectedPhoto?.key === photo.key ? selectedImageRef : null
                     }
                   />
                 </div>
@@ -181,7 +180,7 @@ export default function PhotoGrid() {
                       </div>
                     )}
                     <div>
-                      <Link href={`/photo/${selectedPhoto.id}`} passHref>
+                      <Link href={`/photo/${selectedPhoto.key}`} passHref>
                         <Button variant="outline" className="w-full">
                           View Full Page
                         </Button>

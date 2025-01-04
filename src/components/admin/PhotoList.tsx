@@ -10,27 +10,27 @@ import { Photo } from "@/lib/photos/utils";
 
 interface PhotoListProps {
   photos: Photo[];
-  onDelete: (id: string) => Promise<void>;
-  onUpdate: (photo: Photo) => Promise<void>;
+  onDeleteAction: (key: string) => Promise<void>;
+  onUpdateAction: (photo: Photo) => Promise<void>;
 }
 
 export default function PhotoList({
   photos,
-  onDelete,
-  onUpdate,
+  onDeleteAction,
+  onUpdateAction,
 }: PhotoListProps) {
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editingPhoto, setEditingPhoto] = useState<Photo | null>(null);
 
   const handleEdit = (photo: Photo) => {
-    setEditingId(photo.id);
+    setEditingKey(photo.key);
     setEditingPhoto({ ...photo });
   };
 
   const handleSave = async () => {
     if (editingPhoto) {
-      await onUpdate(editingPhoto);
-      setEditingId(null);
+      await onUpdateAction(editingPhoto);
+      setEditingKey(null);
       setEditingPhoto(null);
     }
   };
@@ -38,21 +38,21 @@ export default function PhotoList({
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {photos.map((photo) => (
-        <div key={photo.id} className="space-y-2 rounded-lg border p-4">
+        <div key={photo.key} className="space-y-2 rounded-lg border p-4">
           <div className="relative aspect-square">
             <Image
               src={photo.url}
-              alt={photo.notes || `Photo ${photo.id}`}
+              alt={photo.notes || `Photo ${photo.key}`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="rounded-lg object-cover"
             />
           </div>
-          {editingId === photo.id && editingPhoto ? (
+          {editingKey === photo.key && editingPhoto ? (
             <>
-              <Label htmlFor={`tags-${photo.id}`}>Edit Tags</Label>
+              <Label htmlFor={`tags-${photo.key}`}>Edit Tags</Label>
               <Input
-                id={`tags-${photo.id}`}
+                id={`tags-${photo.key}`}
                 value={editingPhoto.tags.join(", ")}
                 onChange={(e) =>
                   setEditingPhoto({
@@ -61,10 +61,10 @@ export default function PhotoList({
                   })
                 }
               />
-              <Label htmlFor={`captureDate-${photo.id}`}>Capture Date</Label>
+              <Label htmlFor={`captureDate-${photo.key}`}>Capture Date</Label>
               <Input
                 type="date"
-                id={`captureDate-${photo.id}`}
+                id={`captureDate-${photo.key}`}
                 value={editingPhoto.captureDate.split("T")[0]}
                 onChange={(e) =>
                   setEditingPhoto({
@@ -73,16 +73,16 @@ export default function PhotoList({
                   })
                 }
               />
-              <Label htmlFor={`notes-${photo.id}`}>Notes</Label>
+              <Label htmlFor={`notes-${photo.key}`}>Notes</Label>
               <Textarea
-                id={`notes-${photo.id}`}
+                id={`notes-${photo.key}`}
                 value={editingPhoto.notes || ""}
                 onChange={(e) =>
                   setEditingPhoto({ ...editingPhoto, notes: e.target.value })
                 }
               />
               <Button onClick={handleSave}>Save</Button>
-              <Button variant="outline" onClick={() => setEditingId(null)}>
+              <Button variant="outline" onClick={() => setEditingKey(null)}>
                 Cancel
               </Button>
             </>
@@ -96,7 +96,10 @@ export default function PhotoList({
               <Button onClick={() => handleEdit(photo)}>Edit</Button>
             </>
           )}
-          <Button variant="destructive" onClick={() => onDelete(photo.id)}>
+          <Button
+            variant="destructive"
+            onClick={() => onDeleteAction(photo.key)}
+          >
             Delete
           </Button>
         </div>

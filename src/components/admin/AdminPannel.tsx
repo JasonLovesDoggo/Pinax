@@ -22,8 +22,8 @@ export default function AdminPanel() {
       <TabsContent value="manage">
         <PhotoList
           photos={photos}
-          onDelete={deletePhoto}
-          onUpdate={updatePhoto}
+          onDeleteAction={deletePhoto}
+          onUpdateAction={updatePhoto}
         />
       </TabsContent>
     </Tabs>

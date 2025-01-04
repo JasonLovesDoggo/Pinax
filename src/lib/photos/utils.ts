@@ -7,7 +7,7 @@ import { env } from "@/env";
 import kv from "@/lib/kv";
 
 export interface Photo {
-  id: string /*todo: switch to key (i.e. contains extension)  */;
+  key: string /*filename.extension */;
   tags: string[];
   captureDate: string;
   notes?: string;
