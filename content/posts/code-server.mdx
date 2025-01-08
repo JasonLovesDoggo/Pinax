@@ -1,0 +1,251 @@
+---
+published: false
+---
+# Setting Up code-server with Caddy and Tailscale for Secure Remote Development
+
+In this blog post, we'll walk through how to set up a secure, remote development environment using **code-server**, a web-based interface for VS Code, alongside **Caddy** as a reverse proxy and **Tailscale** for secure networking. This setup allows you to access your development environment from anywhere, securely and efficiently.
+
+## What You'll Need
+
+- A machine (Linux, macOS, or Windows) where you can install software.
+- Basic command-line knowledge.
+- A Tailscale account (free for personal use).
+- Internet access.
+
+## Why This Setup?
+
+- **code-server**: Provides a web-based interface for VS Code, allowing you to develop anywhere.
+- **Caddy**: A modern, easy-to-use web server that can act as a reverse proxy.
+- **Tailscale**: Securely connects your devices over the internet as if they're on the same local network.
+
+Combining these tools gives you a secure, fast, and flexible development environment accessible from anywhere.
+
+## Step 1: Install code-server
+
+### Installation
+
+You can install **code-server** using `npm` (Node.js package manager):
+
+```bash
+# Install Node.js if not installed
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Install code-server
+sudo npm install -g code-server
+```
+
+### Configure code-server
+
+Create a configuration file for code-server:
+
+```bash
+mkdir -p ~/.config/code-server
+echo '{
+  "bind": "127.0.0.1:8080",
+  "auth": "none",
+  "cert": false
+}' > ~/.config/code-server/config.json
+```
+
+This configuration disables password authentication, as only devices on your Tailscale network will be able to access it.
+
+### Run code-server
+
+Start code-server:
+
+```bash
+code-server ~/.config/code-server/config.json
+```
+
+You can access code-server at `http://localhost:8080`, but we'll set up Caddy to proxy this securely.
+
+## Step 2: Install Caddy
+
+### Installation
+
+Install Caddy using the official script:
+
+```bash
+sudo bash -c 'curl -1sLf \
+  "https://github.com/caddyserver/install/releases/latest/download/install.sh" | \
+  sh -s -- -b /usr/local/bin caddy'
+```
+
+### Configure Caddy
+
+Create a Caddyfile to proxy requests to code-server:
+
+```bash
+mkdir -p /etc/caddy
+echo '{
+  http_port = 80
+  https_port = 443
+}
+
+yourdomain.com, *.yourdomain.com {
+        # Set this path to your site's directory.
+
+         tls /etc/letsencrypt/live/yourdomain.com/fullchain.pem /etc/letsencrypt/live/yourdomain.com/privkey.pem
+        # sudo certbot certonly --manual --manual-auth-hook /etc/letsencrypt/acme-dns-auth.py --preferred-challenges dns --debug-challenges -d \*.yourdomain.com -d yourdomain.com
+
+        reverse_proxy 127.0.0.1:8080
+}' > /etc/caddy/Caddyfile
+```
+
+This configuration does the following:
+
+- Listens on port 80 and 443.
+- Redirects HTTP traffic to HTTPS.
+- Proxies HTTPS traffic to code-server running on `127.0.0.1:8080`.
+
+### Run Caddy
+
+Start Caddy:
+
+```bash
+sudo caddy run --config /etc/caddy/Caddyfile
+```
+
+Caddy will automatically obtain a Let's Encrypt SSL certificate for your domain if you configure it.
+
+## Step 3: Install and Configure Tailscale
+
+### Installation
+
+Install Tailscale:
+
+- **Linux**:
+
+  ```bash
+  curl https://tailscale.com/install.sh | sudo bash
+  ```
+
+- **macOS**:
+
+  ```bash
+  brew install tailscale/tap/tailscale
+  ```
+
+- **Windows**: Download from [Tailscale's website](https://tailscale.com/download/).
+
+### Join Tailscale
+
+Run:
+
+```bash
+tailscale up
+```
+
+Follow the instructions to log in and join a Tailscale network. For personal use, you can create a new account or join an existing one.
+
+### Configure Tailscale DNS
+
+Tailscale assigns each device a DNS name like `your_device_name.your_tailscale_domain.ts.net`. You can use this DNS name to access your code-server instance.
+
+## Step 4: Accessing code-server Remotely
+
+### Find Your Tailscale DNS Name
+
+Run:
+
+```bash
+tailscale status
+```
+
+Look for the `DNS name` field, which will be something like `your_device_name.your_tailscale_domain.ts.net`.
+
+### Access code-server Over the Internet
+
+Open a web browser and navigate to:
+
+```
+https://yourdomain.com
+```
+
+You should be redirected to `https://yourdomain.com` and prompted to log in with the password you set for code-server.
+
+## Step 5: Securing Your Setup
+
+### Firewall Rules
+
+Ensure that only Tailscale traffic can access your services. Since Tailscale uses its own network, you can rely on its security measures, but it's good practice to restrict access further if needed.
+
+### Optional: Use a Custom Domain
+
+If you have a custom domain, you can point a DNS record to your Tailscale DNS name and configure Caddy to use your domain.
+
+1. **Add a CNAME record** in your DNS provider pointing, e.g., `dev.yourdomain.com` to `your_device_name.your_tailscale_domain.ts.net`.
+2. **Update your Caddyfile**:
+
+   ```caddy
+   {
+     http_port = 80
+     https_port = 443
+   }
+
+   dev.yourdomain.com {
+     reverse_proxy 127.0.0.1:8080
+   }
+
+   :80 {
+     redir https://{host}{uri}
+   }
+   ```
+
+3. **Restart Caddy**:
+
+   ```bash
+   sudo caddy reload --config /etc/caddy/Caddyfile
+   ```
+
+Now, you can access code-server at `https://dev.yourdomain.com`.
+
+## Step 6: Setting Up Certbot for SSL Certificates
+
+### Installation
+
+Install Certbot:
+
+```bash
+sudo apt-get install certbot
+```
+
+### Obtain SSL Certificates
+
+Run the following command to obtain SSL certificates for your domain:
+
+```bash
+sudo certbot certonly --manual --preferred-challenges dns -d yourdomain.com -d *.yourdomain.com
+```
+
+Follow the instructions to verify domain ownership by adding DNS TXT records. Once verified, Certbot will issue the SSL certificates.
+
+### Update Caddyfile
+
+Update your Caddyfile to use the obtained SSL certificates:
+
+```caddy
+yourdomain.com, *.yourdomain.com {
+    tls /etc/letsencrypt/live/yourdomain.com/fullchain.pem /etc/letsencrypt/live/yourdomain.com/privkey.pem
+    reverse_proxy 127.0.0.1:8080
+}
+```
+
+### Restart Caddy
+
+Restart Caddy to apply the changes:
+
+```bash
+sudo caddy reload --config /etc/caddy/Caddyfile
+```
+
+## Conclusion
+
+By setting up code-server with Caddy and Tailscale, you've created a secure, remote development environment accessible from anywhere. This setup leverages the strengths of each tool:
+
+- **code-server** for a powerful, web-based development interface.
+- **Caddy** for easy HTTPS and reverse proxying.
+- **Tailscale** for secure, seamless networking.
+
+Whether you're working from home, a café, or anywhere else, this setup ensures you have a consistent, secure development environment at your fingertips.
